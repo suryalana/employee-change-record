@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 06, 2021 at 07:45 AM
--- Server version: 10.4.17-MariaDB
--- PHP Version: 7.4.13
+-- Waktu pembuatan: 26 Okt 2021 pada 08.31
+-- Versi server: 10.4.19-MariaDB
+-- Versi PHP: 8.0.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `choise`
+-- Struktur dari tabel `account`
+--
+
+CREATE TABLE `account` (
+  `id_account` int(11) NOT NULL,
+  `emp_id` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `full_name` varchar(100) NOT NULL,
+  `role` enum('hrd','hod','ceo','cd') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `account`
+--
+
+INSERT INTO `account` (`id_account`, `emp_id`, `password`, `full_name`, `role`) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Superadmin', 'hod'),
+(2, '23', 'a86c899398a60d79e0de9d8fa1ae9b04', 'Alip Surya', 'hrd'),
+(4, 'cladtek', '202cb962ac59075b964b07152d234b70', 'cladtekk', 'ceo');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `choise`
 --
 
 CREATE TABLE `choise` (
@@ -32,7 +55,7 @@ CREATE TABLE `choise` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `choise`
+-- Dumping data untuk tabel `choise`
 --
 
 INSERT INTO `choise` (`choise`) VALUES
@@ -47,7 +70,7 @@ INSERT INTO `choise` (`choise`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `departement`
+-- Struktur dari tabel `departement`
 --
 
 CREATE TABLE `departement` (
@@ -56,7 +79,7 @@ CREATE TABLE `departement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `departement`
+-- Dumping data untuk tabel `departement`
 --
 
 INSERT INTO `departement` (`id_departement`, `departement`) VALUES
@@ -80,7 +103,7 @@ INSERT INTO `departement` (`id_departement`, `departement`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `division`
+-- Struktur dari tabel `division`
 --
 
 CREATE TABLE `division` (
@@ -90,7 +113,7 @@ CREATE TABLE `division` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `division`
+-- Dumping data untuk tabel `division`
 --
 
 INSERT INTO `division` (`id_division`, `division`, `department_id`) VALUES
@@ -179,7 +202,7 @@ INSERT INTO `division` (`id_division`, `division`, `department_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `employee`
+-- Struktur dari tabel `employee`
 --
 
 CREATE TABLE `employee` (
@@ -201,7 +224,7 @@ CREATE TABLE `employee` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `employee`
+-- Dumping data untuk tabel `employee`
 --
 
 INSERT INTO `employee` (`Employee_Number`, `Name`, `Company`, `Designation`, `Employment_Status`, `Department`, `Section`, `Marital_Status`, `Ethnic`, `Highest_Educational_Level`, `Main_Position`, `Sex`, `Religion`, `Join_Date`, `Employment_Status_1`) VALUES
@@ -1270,7 +1293,7 @@ INSERT INTO `employee` (`Employee_Number`, `Name`, `Company`, `Designation`, `Em
 -- --------------------------------------------------------
 
 --
--- Table structure for table `employee_status`
+-- Struktur dari tabel `employee_status`
 --
 
 CREATE TABLE `employee_status` (
@@ -1278,7 +1301,7 @@ CREATE TABLE `employee_status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `employee_status`
+-- Dumping data untuk tabel `employee_status`
 --
 
 INSERT INTO `employee_status` (`employee_status`) VALUES
@@ -1289,10 +1312,11 @@ INSERT INTO `employee_status` (`employee_status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `input`
+-- Struktur dari tabel `input`
 --
 
 CREATE TABLE `input` (
+  `id_erc` int(11) NOT NULL,
   `option` varchar(20) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `Employee_ID` varchar(30) NOT NULL,
@@ -1301,75 +1325,103 @@ CREATE TABLE `input` (
   `Effective_Date_of_Change` date NOT NULL,
   `Reason_for_Change` varchar(200) NOT NULL,
   `Employment_Status` varchar(50) NOT NULL,
+  `Employment_Status_To` varchar(50) DEFAULT NULL,
   `Department` varchar(50) NOT NULL,
+  `Department_To` varchar(50) DEFAULT NULL,
   `Division_Section_Station` varchar(50) NOT NULL,
+  `Division_Section_Station_To` varchar(50) DEFAULT NULL,
   `Immediate_Superior` varchar(50) NOT NULL,
+  `Immediate_Superior_To` varchar(50) DEFAULT NULL,
   `Des` varchar(50) NOT NULL,
+  `Des_To` varchar(50) DEFAULT NULL,
   `Basic_Salary` int(50) NOT NULL,
+  `Basic_Salary_To` int(50) DEFAULT NULL,
   `Allowances_Amount` int(50) NOT NULL,
+  `Allowances_Amount_To` int(50) DEFAULT NULL,
   `Overtime_Rate` int(50) NOT NULL,
+  `Overtime_Rate_To` int(50) DEFAULT NULL,
   `Others` varchar(50) DEFAULT NULL,
-  `request` varchar(50) DEFAULT NULL,
-  `manager` varchar(50) DEFAULT NULL,
-  `HRD` varchar(50) DEFAULT NULL,
-  `CEO` varchar(50) DEFAULT NULL,
+  `Others_To` varchar(50) DEFAULT NULL,
+  `request_img` varchar(255) DEFAULT NULL,
+  `manager_img` varchar(255) DEFAULT NULL,
+  `hrd_img` varchar(255) DEFAULT NULL,
+  `ceo_img` varchar(255) DEFAULT NULL,
   `Remark` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `input`
+-- Dumping data untuk tabel `input`
 --
 
-INSERT INTO `input` (`option`, `Name`, `Employee_ID`, `Designantion`, `Date_of_Joining`, `Effective_Date_of_Change`, `Reason_for_Change`, `Employment_Status`, `Department`, `Division_Section_Station`, `Immediate_Superior`, `Des`, `Basic_Salary`, `Allowances_Amount`, `Overtime_Rate`, `Others`, `request`, `manager`, `HRD`, `CEO`, `Remark`) VALUES
-('Contract', 'Employee Name 34', '213', 'Sr. Document Controller', '2010-12-20', '2021-10-20', 'good', 'Permanent', '9', '35', 'good', 'Sr. Document Controller', 123333333, 1313131, 1, 'none', 'acc', 'acc', NULL, NULL, ''),
-('Promotion', 'Surya', '3312001020', 'Employee', '2021-09-28', '2021-10-22', 'Good', 'Contract', 'Health,', 'Expeditor', 'Good', 'batam', 31, 211, 314, 'none', NULL, NULL, NULL, NULL, ''),
-('Contract', 'Surya', '3312001023', 'Employee', '2021-10-08', '2021-10-15', 'Good', 'Permanent', 'Project', 'HSE', 'Good', 'batam', 12333333, 123123331, 2, 'none', 'acc', 'acc', NULL, NULL, ''),
-('Transfer', 'Surya', '3312001032', 'Employee', '2021-09-28', '2021-09-30', 'Good', 'Permanent', 'ITES', 'Expeditor', 'Good', 'batam', 21, 21, 21, 'none', NULL, NULL, NULL, NULL, '');
+INSERT INTO `input` (`id_erc`, `option`, `Name`, `Employee_ID`, `Designantion`, `Date_of_Joining`, `Effective_Date_of_Change`, `Reason_for_Change`, `Employment_Status`, `Employment_Status_To`, `Department`, `Department_To`, `Division_Section_Station`, `Division_Section_Station_To`, `Immediate_Superior`, `Immediate_Superior_To`, `Des`, `Des_To`, `Basic_Salary`, `Basic_Salary_To`, `Allowances_Amount`, `Allowances_Amount_To`, `Overtime_Rate`, `Overtime_Rate_To`, `Others`, `Others_To`, `request_img`, `manager_img`, `hrd_img`, `ceo_img`, `Remark`) VALUES
+(6, 'Promotion', 'Employee Name 1', '1', 'Business Development', '2013-01-01', '2021-10-08', 'Good', 'Contract', 'Permanent', '5', '13', '16', '45', 'employee', 'employee', 'batam', NULL, 100, NULL, 10, NULL, 1, NULL, 'none', NULL, 'acc', 'acc', 'acc', 'acc', 'none'),
+(7, 'Contract', 'Employee Name 9', '79', 'Store Foreman', '2007-11-28', '2021-10-22', 'Good', 'Daily', 'Permanent', '3', '1', '62', '28', 'employee', 'employee', 'batam', 'batam', 12222, 12122, 111, 111, 1, 1, 'none', 'none', 'acc', 'acc', 'acc', 'acc', 'none'),
+(8, 'Transfer', 'Employee Name 1', '1', 'Business Development', '2013-01-01', '2021-10-21', 'Good', 'Daily', 'Permanent', '2', '2', '61', '61', 'employee', 'employee', 'batam', 'batam', 444, 444, 44, 44, 4, 4, 'none', 'none', 'acc', 'acc', 'acc', 'acc', 'imgApprove1'),
+(9, 'Transfer', 'Employee Name 9', '92', 'Store Foreman', '2007-11-28', '2021-10-21', 'Good', 'Daily', 'Permanent', '3', '1', '73', '28', 'employee', 'employee', 'batam', 'batam', 9099, 8888, 88, 88, 8, 8, 'none', 'none', '04.png', 'acc', 'acc', 'acc', '$upload[\'file\'][\'file_name\']');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `departement`
+-- Indeks untuk tabel `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id_account`);
+
+--
+-- Indeks untuk tabel `departement`
 --
 ALTER TABLE `departement`
   ADD PRIMARY KEY (`id_departement`);
 
 --
--- Indexes for table `division`
+-- Indeks untuk tabel `division`
 --
 ALTER TABLE `division`
-  ADD PRIMARY KEY (`id_division`);
+  ADD PRIMARY KEY (`id_division`),
+  ADD KEY `division_ibfk_1` (`department_id`);
 
 --
--- Indexes for table `input`
+-- Indeks untuk tabel `input`
 --
 ALTER TABLE `input`
-  ADD PRIMARY KEY (`Employee_ID`);
+  ADD PRIMARY KEY (`id_erc`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `departement`
+-- AUTO_INCREMENT untuk tabel `account`
+--
+ALTER TABLE `account`
+  MODIFY `id_account` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `departement`
 --
 ALTER TABLE `departement`
   MODIFY `id_departement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `division`
+-- AUTO_INCREMENT untuk tabel `division`
 --
 ALTER TABLE `division`
   MODIFY `id_division` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT untuk tabel `input`
+--
+ALTER TABLE `input`
+  MODIFY `id_erc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `division`
+-- Ketidakleluasaan untuk tabel `division`
 --
 ALTER TABLE `division`
   ADD CONSTRAINT `division_ibfk_1` FOREIGN KEY (`department_id`) REFERENCES `departement` (`id_departement`);
