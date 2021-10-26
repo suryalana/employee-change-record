@@ -1,0 +1,27 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.logo{
+	width: 240px;
+	height: 150px;
+	float: left;
+	margin-bottom: 20px;
+}
+
+.judul{
+	margin-top: 100px;
+	margin-left: 10px;
+}
+
+.bio{
+	width: 100%;
+}
+
+.acc{
+	width: 100%;
+	text-align: center;
+	border: solid 1px;
+}
