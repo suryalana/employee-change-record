@@ -30,7 +30,11 @@
 	  	<a href="<?= base_url('login'); ?>" class="btn btn-primary" style=" float: right; margin-top: -20px;">Logout</a>
           <h3 class="text-center font-weight-bold">Data ECR (Employee Change Record) </h3>
           <tr>
-              <th colspan='2'>Employment Status</th>
+		  	  <th colspan='2'>Options</th>
+			  <th colspan='2'>Name</th>
+              <th colspan='2'>Employment ID</th>
+			  <th colspan='2'>Designation</th>
+			  <th colspan='2'>Employment Status</th>
               <th colspan='2'>Department</th>
               <th colspan='2'>Division/ Section / Station</th>
               <th colspan='2'>Immediate Superior</th>
@@ -48,6 +52,10 @@
         
        
           <tr data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+			  <td></td>
+			  <td></td>
+			  <td></td>
+			  <td></td>
               <td>Form</td>
               <td>To</td>
               <td>Form</td>
@@ -76,6 +84,10 @@
 				<?php if (! empty($input)) {
 				foreach ($input as $i) {
 			echo "
+						<td>".$i->option."</td>
+						<td>".$i->Name."</td>
+						<td>".$i->Employee_ID."</td>
+						<td>".$i->Designation."</td>
 						<td>".$i->Employment_Status."</td>
 						<td>".$i->Employment_Status_To."</td>
 						<td>".$i->Department."</td>
