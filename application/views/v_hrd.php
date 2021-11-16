@@ -30,11 +30,11 @@
 	  	<a href="<?= base_url('login'); ?>" class="btn btn-primary" style=" float: right; margin-top: -20px;">Logout</a>
           <h3 class="text-center font-weight-bold">Data ECR (Employee Change Record) </h3>
           <tr>
-		  	  <th colspan='2'>Options</th>
-			  <th colspan='2'>Name</th>
-              <th colspan='2'>Employment ID</th>
-			  <th colspan='2'>Designation</th>
-			  <th colspan='2'>Employment Status</th>
+		  	  <th colspan='1'>Options</th>
+			  <th colspan='1'>Name</th>
+              <th colspan='1'>Employment ID</th>
+			  <th colspan='1'>Designation</th>
+              <th colspan='2'>Employment Status</th>
               <th colspan='2'>Department</th>
               <th colspan='2'>Division/ Section / Station</th>
               <th colspan='2'>Immediate Superior</th>
@@ -52,11 +52,11 @@
         
        
           <tr data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+		  	  <td></td>
 			  <td></td>
 			  <td></td>
 			  <td></td>
-			  <td></td>
-              <td>Form</td>
+		  	  <td>Form</td>
               <td>To</td>
               <td>Form</td>
               <td>To</td>
@@ -81,13 +81,74 @@
 			  <td colspan='2'>EDIT/DELETE</td>
           </tr>
 		  <tr>
-				<?php if (! empty($input)) {
+				<?php 
+				function checkstatusmanager($d ,$id){
+					$tmp = '';
+					if($_SESSION['role'] != 'manager'){
+						$tmp = "disabled = 'true'";
+					}
+					if($d != 'acc'){
+						if ($d =='reject') {
+							return  $d;
+						}
+						return  '<button type="button" id="'.$id  .'"class="btn btn-success btnrm" style="width"'.$tmp.'>
+						<img src="https://img.icons8.com/external-kiranshastry-gradient-kiranshastry/30/000000/external-check-banking-and-finance-kiranshastry-gradient-kiranshastry.png"/>
+						</button> <button type="button" id="'.$id  .'"class="btn btn-danger" '.$tmp.'>
+						<img src="https://img.icons8.com/ios-filled/30/000000/x.png"/></button>';
+					}
+					
+					else{
+						return  $d;
+
+					}
+				}
+				function checkstatushrd($d ,$id){
+					$tmp = '';
+					if($_SESSION['role'] != 'hrd'){
+						$tmp = "disabled = 'true'";
+					}
+					if($d != 'acc' ){
+						if ($d =='reject') {
+							return  $d;
+						}
+						return  '<button type="button" id="'.$id  .'"class="btn btn-success btnh" style="width"'.$tmp.'>
+						<img src="https://img.icons8.com/external-kiranshastry-gradient-kiranshastry/30/000000/external-check-banking-and-finance-kiranshastry-gradient-kiranshastry.png"/>
+						</button> <button type="button" id="'.$id  .'" class="btn btn-danger btnrh" '.$tmp.'>
+						<img src="https://img.icons8.com/ios-filled/30/000000/x.png"/></button>';
+					}
+					
+					else{
+						return  $d;
+
+					}
+				}
+				function checkstatusceo($d ,$id){
+					$tmp = '';
+					if($_SESSION['role'] != 'ceo'){
+						$tmp = "disabled = 'true'";
+					}
+					if($d != 'acc' ){
+						if ($d =='reject') {
+							return  $d;
+						}
+						return  '<button type="button" id="'.$id  .'"class="btn btn-success btnc" style="width"'.$tmp.'>
+						<img src="https://img.icons8.com/external-kiranshastry-gradient-kiranshastry/30/000000/external-check-banking-and-finance-kiranshastry-gradient-kiranshastry.png"/>
+						</button> <button type="button" id="'.$id  .'" class="btn btn-danger btnrc" '.$tmp.'>
+						<img src="https://img.icons8.com/ios-filled/30/000000/x.png"/></button>';
+					}
+					
+					else{
+						return  $d;
+
+					}
+				}
+				if (! empty($input)) {
 				foreach ($input as $i) {
 			echo "
 						<td>".$i->option."</td>
 						<td>".$i->Name."</td>
 						<td>".$i->Employee_ID."</td>
-						<td>".$i->Designation."</td>
+						<td>".$i->Designantion."</td>
 						<td>".$i->Employment_Status."</td>
 						<td>".$i->Employment_Status_To."</td>
 						<td>".$i->Department."</td>
@@ -107,11 +168,14 @@
 						<td>".$i->Others."</td>
 						<td>".$i->Others_To."</td>
 						<td>".$i->request_img."</td>
-						<td>".$i->manager_img."</td>
-						<td>".$i->hrd_img."</td>
-						<td>".$i->ceo_img."</td>
-						<td>".'<button class="btn btn-primary">EDIT</button>'."</td>
-						<td>".'<button class="btn btn-danger">DELETE</button>'."</td>
+						<td>".checkstatusmanager($i->manager_img,$i->Employee_ID)."</td>
+						
+						<td>".checkstatushrd($i->hrd_img,$i->Employee_ID)."</td>
+						<td>".checkstatusceo($i->ceo_img, $i->Employee_ID)."</td>
+						<td>
+							<a href='".base_url("ubah/".$i->id_erc)."'<button type='button' class='btn btn-light'>EDIT</button></a>
+							<a href='".base_url("c_index/hapus/".$i->Employee_ID)."'><button type='button' class='btn btn-danger'>DELETE</button></a>
+						</td>
 					</tr> ";
 				}
 			}else{
@@ -127,6 +191,11 @@
 	</div>
 
 	<!-- Optional JavaScript; choose one of the two! -->
+
+	<!--
+		<td><a href='".base_url("c_menu/ubah/".$m->idmenu)."'<button type='button' class='btn btn-light'>EDIT</button></a>
+		<a href='".base_url("c_menu/hapus/".$m->idmenu)."'><button type='button' class='btn btn-danger'>DELETE</button></a></td>
+	-->
 
 	<!-- <?php if (! empty($input)) {
 		foreach ($input as $i) {
@@ -144,6 +213,142 @@
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
     <script src="./assets/js/script.js"></script>
+	<script>
+					 $('.btnh').click(function(){ 
+						var id=$(this).attr('id');
+						var role='hrd';
+						var type='acc';
+						console.log(id);
+						
+						$.ajax({
+							url: '<?php echo site_url('doaction');?>',
+							method : "POST",
+							data : {
+									id: id,
+									role: role,
+									type: type
+								},
+							async : true,
+							dataType : 'json',
+							success: function(data){
+								console.log(data);
+							}
+						});
+						// return false;
+					}); 
+					$('.btnc').click(function(){ 
+						var id=$(this).attr('id');
+						var role='ceo';
+						var type='acc';
+						console.log(id);
+						
+						$.ajax({
+							url: '<?php echo site_url('doaction');?>',
+							method : "POST",
+							data : {
+									id: id,
+									role: role,
+									type: type
+								},
+							async : true,
+							dataType : 'json',
+							success: function(data){
+								console.log(data);
+							}
+						});
+						// return false;
+					}); 
+					$('.btnm').click(function(){ 
+						var id=$(this).attr('id');
+						var role='manager';
+						var type='acc';
+						console.log(id);
+						
+						$.ajax({
+							url: '<?php echo site_url('doaction');?>',
+							method : "POST",
+							data : {
+									id: id,
+									role: role,
+									type: type
+								},
+							async : true,
+							dataType : 'json',
+							success: function(data){
+								console.log(data);
+							}
+						});
+					}); 
+
+					$('.btnrh').click(function(){ 
+						var id=$(this).attr('id');
+						var role='hrd';
+						var type='reject';
+						console.log(id);
+						
+						$.ajax({
+							url: '<?php echo site_url('doaction');?>',
+							method : "POST",
+							data : {
+									id: id,
+									role: role,
+									type: type
+								},
+							async : true,
+							dataType : 'json',
+							success: function(data){
+								console.log(data);
+							}
+						});
+						// return false;
+					}); 
+					$('.btnrc').click(function(){ 
+						var id=$(this).attr('id');
+						var role='ceo';
+						var type='reject';
+						console.log(id);
+						
+						$.ajax({
+							url: '<?php echo site_url('doaction');?>',
+							method : "POST",
+							data : {
+									id: id,
+									role: role,
+									type: type
+								},
+							async : true,
+							dataType : 'json',
+							success: function(data){
+								console.log(data);
+							}
+						});
+						// return false;
+					}); 
+					$('.btnrm').click(function(){ 
+						var id=$(this).attr('id');
+						var role='manager';
+						var type='reject';
+						console.log(id);
+						
+						$.ajax({
+							url: '<?php echo site_url('doaction');?>',
+							method : "POST",
+							data : {
+									id: id,
+									role: role,
+									type: type
+								},
+							async : true,
+							dataType : 'json',
+							success: function(data){
+								console.log(data);
+							}
+						});
+						// return false;
+					}); 
+
+
+				</script>
     <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
 <script>
 	function myFunction() {

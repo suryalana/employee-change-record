@@ -36,7 +36,7 @@ class C_authentication extends CI_Controller {
             $_SESSION['full_name'] = $user['full_name'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['logged_in'] = true;
-            if($user['role']=='hrd'){
+            if($user['role']=='hrd' || $user['role']=='ceo' || $user['role']=='manager'){
                 redirect('hrd');
             }
             else{

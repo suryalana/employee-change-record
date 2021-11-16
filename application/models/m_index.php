@@ -8,9 +8,29 @@ class M_index extends CI_Model {
 		$this->db->insert('input', $data);
 	}
 
+	public function update($data, $id_erc)
+	{
+		$this->db->set($data);
+		$this->db->where('id_erc', $id_erc);
+		$this->db->update('input');
+	}
+
+
 	public function tampil()
 	{
 		return $this->db->get('input')->result();
+	}
+
+	public function tampilById($id_erc)
+	{
+
+		$this->db->select('*');
+		$this->db->from('input');
+		$this->db->join('departement','input.Department_To = departement.id_departement');
+		$this->db->join('division','departement.id_departement = division.department_id');
+		$this->db->where('id_erc',$id_erc);
+		$data = $this->db->get()->result();
+		return $data;
 	}
 
 	public function tampil_status()
@@ -44,8 +64,8 @@ class M_index extends CI_Model {
 	}
 
 	public function update_data($data,$where)
-	{
-		$this->db->where($where);
+	{	
+		$this->db->where('Employee_ID',$where);
 		$this->db->update('input', $data);
 	}
 

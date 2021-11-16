@@ -302,6 +302,10 @@
 						<p id="text2" style="display:none">APPROVE!</p>
 					</td>
 					<td>
+					
+						<p id="text2" style="display:none">RIJECT!</p>
+					</td>
+					<td>
 						<img id="blah3"  width="200px" height="200px"  />
 						<input class="form-control" type="file" 
 						    onchange="document.getElementById('blah3').src = window.URL.createObjectURL(this.files[0])">

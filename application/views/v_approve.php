@@ -240,8 +240,8 @@
 				<tr>
 					<td>Requested by a</td>
 					<td>Agreed by <br> <b>Manager/HOD</b></td>
-					<td>Reviewed by <br> <b>HRD</b></td>
-					<td>Approved by <br> <b>General Manager/CEO</b></td>
+					<td>Reviewed by <br> <b>General Manager/CEO</b></td>
+					<td>Approved by <br> <b>HRD</b></td>
 				</tr>
 				<tr>
 					<td>
@@ -251,6 +251,7 @@
 						<input class="btn btn-primary" name="cek_acc" id="myCheck" value="acc" type="checkbox"
 							onclick="myFunction()">
 						<p id="text" style="display:none">APPROVE!</p>
+
 					</td>
 					<td>
 						<img id="blah2"  width="200px" height="200px"  />
@@ -258,7 +259,11 @@
 						    onchange="document.getElementById('blah2').src = window.URL.createObjectURL(this.files[0])">
 						<input class="btn btn-primary" name="cek_acc1" id="myCheck2" value="acc" type="checkbox"
 							onclick="myFunction2()">
+						<input class="btn btn-primary" name="cek_accR" id="myCheckR" value="acc" type="checkbox"
+							onclick="myFunctionR()">
 						<p id="text2" style="display:none">APPROVE!</p>
+						<p id="textR" style="display:none">REJECT!</p>
+						
 					</td>
 					<td>
 						<img id="blah3"  width="200px" height="200px"  />
@@ -266,7 +271,10 @@
 						    onchange="document.getElementById('blah3').src = window.URL.createObjectURL(this.files[0])">
 						<input class="btn btn-primary" name="cek_acc2" id="myCheck3" value="acc" type="checkbox"
 							onclick="myFunction3()">
+						<input class="btn btn-primary" name="cek_accR1" id="myCheckR1" value="reject" type="checkbox"
+							onclick="myFunctionR1()">
 						<p id="text3" style="display:none">APPROVE!</p>
+						<p id="textR1" style="display:none">REJECT!</p>
 					</td>
 					<td>
 						<img id="blah4"  width="200px" height="200px"  />
@@ -274,7 +282,10 @@
 						    onchange="document.getElementById('blah4').src = window.URL.createObjectURL(this.files[0])">
 						<input class="btn btn-primary" name="cek_acc3" id="myCheck4" value="acc" type="checkbox"
 							onclick="myFunction4()">
+							<input class="btn btn-primary" name="cek_accR2" id="myCheckR2" value="acc" type="checkbox"
+							onclick="myFunctionR2()">
 						<p id="text4" style="display:none">APPROVE!</p>
+						<p id="textR2" style="display:none">REJECT!</p>
 					</td>
 				</tr>
 			</table>
@@ -312,6 +323,23 @@
 		var text = document.getElementById("text");
 		if (checkBox.checked == true) {
 			text.style.display = "block";
+			$.ajax({
+							url : "<?php echo site_url('c_approve/get_DivisionCategory');?>",
+							method : "POST",
+							data : {id: id},
+							async : true,
+							dataType : 'json',
+							success: function(data){
+								console.log(data);
+								var html = '';
+								var i;
+								for(i=0; i<data.length; i++){
+									html += '<option value='+data[i].id_division+'>'+data[i].division+'</option>';
+								}
+								$('#ops_div').html(html);
+		
+							}
+						});
 		} else {
 			text.style.display = "none";
 		}
@@ -344,6 +372,39 @@
 		var checkBox = document.getElementById("myCheck4");
 		var text = document.getElementById("text4");
 		if (checkBox.checked == true){
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+	}
+</script>
+<script>
+	function myFunctionR() {
+		var checkBox = document.getElementById("myCheckR");
+		var text = document.getElementById("textR");
+		if (checkBox.checked == true) {
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+	}
+</script>
+<script>
+	function myFunctionR1() {
+		var checkBox = document.getElementById("myCheckR1");
+		var text = document.getElementById("textR1");
+		if (checkBox.checked == true) {
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+	}
+</script>
+<script>
+	function myFunctionR2() {
+		var checkBox = document.getElementById("myCheckR2");
+		var text = document.getElementById("textR2");
+		if (checkBox.checked == true) {
 			text.style.display = "block";
 		} else {
 			text.style.display = "none";
