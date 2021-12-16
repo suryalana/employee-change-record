@@ -24,36 +24,59 @@
         </tr>
         <tr>
             <td><?= $emp[0]->Employment_Status; ?> </td>
+            <td><?= $emp[0]->Employment_Status_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Department; ?> </td>
+            <td><?= $emp[0]->Department_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Division_Section_Station; ?> </td>
+            <td><?= $emp[0]->Division_Section_Station_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Department; ?> </td>
+            <td><?= $emp[0]->Department_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Division_Section_Station; ?> </td>
+            <td><?= $emp[0]->Division_Section_Station_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Immediate_Superior; ?> </td>
+            <td><?= $emp[0]->Immediate_Superior_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Des; ?> </td>
+            <td><?= $emp[0]->Des_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Basic_Salary; ?> </td>
+            <td><?= $emp[0]->Basic_Salary_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Allowances_Amount; ?> </td>
+            <td><?= $emp[0]->Allowances_Amount_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Overtime_Rate; ?> </td>
+            <td><?= $emp[0]->Overtime_Rate_To; ?> </td>
         </tr>
         <tr>
             <td><?= $emp[0]->Others; ?> </td>
+            <td><?= $emp[0]->Others_To; ?> </td>
+        </tr>
+        <tr>
+            <td><?= $emp[0]->request_img;?> </td>
+        </tr>
+        <tr>
+            <td><?= $emp[0]->manager_img;?> </td>
+        </tr>
+        <tr>
+            <td><?= $emp[0]->hrd_img;?> </td>
+        </tr>
+        <tr>
+            <td><?= $emp[0]->ceo_img;?> </td>
         </tr>
         
         <tbody>

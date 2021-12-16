@@ -25,6 +25,10 @@ class C_index extends CI_Controller {
 
 	public function index()
 	{
+		if(!$this->M_authentication->is_LoggedIn()){
+            redirect('login');    
+        }
+
 		$data['input'] = $this->m_index->tampil();
 		$data['status'] = $this->m_index->tampil_status();
 		$data['departement'] = $this->m_index->tampil_departement();
@@ -35,7 +39,7 @@ class C_index extends CI_Controller {
 		$this->load->view('v_index', $data);
 	}
 
-	public function doAction($id = null, $role = null, $type = null)
+	public function doAction($id = null, $role = null, $type = null, $id_erc = null)
 	{
 		if ($id == null && $role == null && $type == null) {
 			$id = $this->input->post('id');
@@ -43,7 +47,18 @@ class C_index extends CI_Controller {
 			$type = $this->input->post('type');
 		}
 
+		// die(var_dump($role));
+
 		switch ($role) {
+
+			case 'user':
+				if ($type == 'acc') {
+					$data = array(
+						'request_img' => 'acc'
+					);
+				}
+			break;
+
 			case 'hrd':
 					if ($type == 'acc') {
 						$data = array(
@@ -84,12 +99,20 @@ class C_index extends CI_Controller {
 		$this->m_index->update_data($data , $id);
 
 		switch ($role) {
+			case 'user':
+					$tempRole = 'manager';
+				break;
+
 			case 'manager':
 					$tempRole = 'hrd';
 				break;
 
 			case 'hrd':
 					$tempRole = 'ceo';
+				break;
+
+			case 'ceo':
+					redirect('login');
 				break;
 			
 			default:
@@ -106,119 +129,73 @@ class C_index extends CI_Controller {
 
 		*/
 
-		$link = base_url().'approval/'.$id.'/'.$tempRole.'/'.$type;
+		// SELECT ACCOUNT BY ROLE
+		// $dataAccount = $this->m_index->getDataByField('account','role', $tempRole);
+		
 
-		$textContent = <<<HEREDOC
-		Dear, Penerima berikut adalah link untuk menyetujui Employee change record karyawan. untuk menyetujui klik link pada di bawah ini.
+		switch ($tempRole) {
+			case 'manager':
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					// die(var_dump($dataErc[0]['manager_empid']));
+					$empid = $dataErc[0]['manager_empid'];
+				break;
+			
+			case 'ceo':
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					$empid = $dataErc[0]['ceo_empid'];
+				break;
 
-		$link
-
-		Best Regards, 
-		CLADTEK.
-
-		HEREDOC;
-		$data = array(
-			'title' => 'Employee change Record approval',
-			'content' => $textContent,
-			'email' => 'alipsayyidah102@gmail.com',
-			'nama' => 'Alip', 
-		);
-
-		if ($this->sendEmail($data)) {
-			redirect('login'); 
-		}else {
-			die('Failed To send email');
+			case 'hrd':
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					$empid = $dataErc[0]['hrd_empid'];
+				break;
+			case 'complete':
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					$empid = $dataErc[0]['hrd_empid'];
+				break;
+			default:
+				# code...
+				break;
 		}
-		
-	}
 
-	// accepthrd
-	public function accepthrd(){
 
-		$id = $this->input->post('id');
+		// die(var_dump('Employee id Destination: '.$empid));
+		$dataAccount = $this->m_index->getDataByField('account','emp_id', $empid);
+		// die(var_dump($this->db->last_query()));
+		// die(var_dump($dataAccount));
 
-		// $passwd = $this->input->post('passwd');
-		$data = array(
-			'hrd_img' => 'acc'
+		foreach ($dataAccount as $dAcc) {
+			$acclink = base_url().'approval/'.$id.'/'.$tempRole.'/acc/'.$id_erc;
+			$rejectlink = base_url().'approval/'.$id.'/'.$tempRole.'/reject/'.$id_erc;
+			$fullname = $dAcc["full_name"];
+
+			$textContent = <<<HEREDOC
+			Dear $fullname $division , Penerima berikut adalah link untuk menyetujui Employee change record karyawan. untuk menyetujui klik link pada di bawah ini.
+
+			Link for Accept  : $acclink
+
+			Link for Reject : $rejectlink
+
+			Best Regards, 
+			CLADTEK.
+
+			HEREDOC;
+			$data = array(
+				'title' => 'Employee change Record approval',
+				'content' => $textContent,
+				'email' => $dAcc['email'],
+				'nama' => $dAcc['full_name'], 
 			);
-		echo $id;
-		$this->m_index->update_data($data , $id);
-		redirect('login');
-	}
 
-	// rejecthrd
-	public function rejecthrd(){
-		
-		$id = $this->input->post('id');		
-    // $passwd = $this->input->post('passwd');
-		$data = array(
-			'hrd_img' => 'reject'
-			);
-		echo $id;
-		$this->m_index->update_data($data , $id);
-		redirect('login'); 
-	}
-
-	// acceptceo
-	public function acceptceo($data_id = null){
-		
-		$id = $this->input->post('id');
-
-		if ($data_id == null) {
-			$id = $this->input->post('id');
-		}elseif ($data_id != null) {
-			$id = $data_id;
+			if ($this->sendEmail($data)) {
+				redirect('login'); 
+			}else {
+				die('Failed To send email');
+			}
 		}
-		
-    // $passwd = $this->input->post('passwd');
-		$data = array(
-			'ceo_img' => 'acc'
-			);
-		echo $id;
-		$this->m_index->update_data($data , $id);
-		redirect('login'); 
-	}
 
-	// rejectceo
-	public function rejectceo(){
 		
-		$id = $this->input->post('id');
-				
-			// $passwd = $this->input->post('passwd');
-		$data = array(
-			'ceo_img' => 'reject'
-			);
-		echo $id;
-		$this->m_index->update_data($data , $id);
-		redirect('login'); 
-	}
-
-	// acceptmng
-	public function acceptmng(){
 		
-		$id = $this->input->post('id');
-				
-			// $passwd = $this->input->post('passwd');
-		$data = array(
-			'manager_img' => 'acc'
-			);
-		echo $id;
-		$this->m_index->update_data($data , $id);
-		redirect('login'); 
-	}
-
-	// rejectmng
-	public function rejectmng(){
-		
-		$id = $this->input->post('id');
-		
-    // $passwd = $this->input->post('passwd');
-		$data = array(
-			'manager_img' => 'reject'
-			);
-		echo $id;
-		$this->m_index->update_data($data , $id);
-		redirect('login'); 
 	}
 
 	public function Approve()
@@ -386,13 +363,16 @@ class C_index extends CI_Controller {
 		$other1 		= $this->input->post('txt_other_to');
 		$remark 		= $this->input->post('txt_remark');
 		$acc 			= $this->input->post('cek_acc');
+		$manager_id 	= $this->input->post('managerid')[0];
+		$ceo_id 		= $this->input->post('ceoid')[0];
+		$hrd_id 		= $this->input->post('hrdid')[0];
 		$acc1 			= $this->input->post('cek_acc1');
 		$acc2 			= $this->input->post('cek_acc2');
 		$acc3	 		= $this->input->post('cek_acc3');
 
 		$effective = date('Y-m-d', strtotime($effective));
 		$date = date('Y-m-d', strtotime($date));
-		// die(var_dump($date));
+		// die(var_dump($hrd_id));
 
 		// die(var_dump($emp_id));
 
@@ -469,29 +449,38 @@ class C_index extends CI_Controller {
 			'Others' => $other,
 			'Others_To' => $other1,
 			'request_img' => $acc,
+			'manager_empid' => $manager_id,
 			'manager_img' => $acc1,
+			'hrd_empid' => $hrd_id,
 			'hrd_img' => $acc2,
+			'ceo_empid' => $ceo_id,
 			'ceo_img' => $acc3,
 			'Remark' => $remark
 		);
 
 		// Upload Gambar 
 
+		// die('lol');
 		$upload = $this->uploadImage('imgApprove1');
 		// die(var_dump([$upload]));
 		if ($_FILES['imgApprove1']['size'] == 0) {
 			// if nothing upload file
-			$this->m_index->simpan($data);
+
+			if ($this->m_index->simpan($data)) {
+				$id_erc = $this->db->insert_id();
+				// die(var_dump('Inserted id : '.$id_erc));
+				$this->doAction($emp_id, 'user', 'acc', $id_erc);
+			}		
 
 
-			redirect(base_url('index.php/c_index'),'refresh');
+			redirect(base_url('logout'),'refresh');
 		} else {
 			if($upload['result'] == "success"){ // Jika proses upload sukses
 
 				$data['request_img'] = $upload['file']['file_name'];
 
 				$this->m_index->simpan($data);
-				redirect(base_url('index.php/c_index'),'refresh');
+				redirect(base_url('logout'),'refresh');
 
 			}else{ // Jika proses upload gagal
 
@@ -500,9 +489,6 @@ class C_index extends CI_Controller {
 				redirect(base_url('c_index'),'refresh');
 			}
 		} 
-
-	
-
 		
 	}
 
@@ -531,6 +517,36 @@ class C_index extends CI_Controller {
 	function get_autocompleteEmployee(){
         if ($this->input->post('searchTerm')) {
             $result = $this->m_index->search_Employee($this->input->post('searchTerm'));
+
+            echo json_encode($result);
+			// echo var_dump($result);
+			// echo $result;
+        }
+    }
+
+	function get_autocompleteManager(){
+        if ($this->input->post('searchTerm')) {
+            $result = $this->m_index->search_Manager($this->input->post('searchTerm'));
+
+            echo json_encode($result);
+			// echo var_dump($result);
+			// echo $result;
+        }
+    }
+
+	function get_autocompleteCeo(){
+        if ($this->input->post('searchTerm')) {
+            $result = $this->m_index->search_Ceo($this->input->post('searchTerm'));
+
+            echo json_encode($result);
+			// echo var_dump($result);
+			// echo $result;
+        }
+    }
+
+	function get_autocompleteHrd(){
+        if ($this->input->post('searchTerm')) {
+            $result = $this->m_index->search_Hrd($this->input->post('searchTerm'));
 
             echo json_encode($result);
 			// echo var_dump($result);
@@ -584,9 +600,10 @@ class C_index extends CI_Controller {
 	
 		//Recipients
 		$mail->setFrom('alipsayyidah102@gmail.com', 'surya');
-		$mail->addAddress($email, $penerima);     //Add a recipient
+		$mail->addAddress($email);     //Add a recipient
 																 //Name is optional
-		$mail->addReplyTo('alipsayyidah102@gmail.com', 'surya');
+		// $mail->addReplyTo('fernando.siboro@cladtek.com', 'surya');
+		// $mail->addReplyTo('alipsayyidah102@gmail.com', 'surya');
 		// $mail->addCC('cc@example.com');
 		// $mail->addBCC('bcc@example.com');
 	

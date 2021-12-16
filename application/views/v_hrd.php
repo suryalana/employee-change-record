@@ -78,7 +78,7 @@
 			  <td>Status Manager</td>
 			  <td>Status HRD</td>
 			  <td>Status CEO</td>
-			  <td colspan='2'>EDIT/DELETE</td>
+			  <td colspan='2'>E/D/P</td>
           </tr>
 		  <tr>
 				<?php 
@@ -173,8 +173,9 @@
 						<td>".checkstatushrd($i->hrd_img,$i->Employee_ID)."</td>
 						<td>".checkstatusceo($i->ceo_img, $i->Employee_ID)."</td>
 						<td>
-							<a href='".base_url("ubah/".$i->id_erc)."'<button type='button' class='btn btn-light'>EDIT</button></a>
+							<a href='".base_url("ubah/".$i->id_erc)."'<button type='button' class='btn btn-info'>EDIT</button></a>
 							<a href='".base_url("c_index/hapus/".$i->Employee_ID)."'><button type='button' class='btn btn-danger'>DELETE</button></a>
+							<a href='".base_url("GeneratePdfController/index/".$i->Employee_ID)."'<button type='button' class='btn btn-dark'>Print</button></a>
 						</td>
 					</tr> ";
 				}

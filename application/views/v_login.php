@@ -1,64 +1,49 @@
-<!doctype html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--> 	<html lang="en"> <!--<![endif]-->
-<head>
+<div class="container">
 
-	<!-- General Metas -->
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">	<!-- Force Latest IE rendering engine -->
-	<title>Login Form</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	
-	<!-- Mobile Specific Metas -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
-	
-	<!-- Stylesheets -->
-	<link rel="stylesheet" href="<?= base_url('assets/css1/base.css'); ?>">
-	<link rel="stylesheet" href="<?= base_url('assets/css1/skeleton.css'); ?>">
-	<link rel="stylesheet" href="<?= base_url('assets/css1/layout.css'); ?>">
-	
-</head>
-<body>
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
 
-	<div class="notice">
-		<a href="" class="close">close</a>
-		<p class="warn">Whoops! We didn't recognise your username or password. Please try again.</p>
-	</div>
+            <div class="col-lg-7">
 
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <!-- <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> -->
+                            <div class="col-lg">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Employee Change Record</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Login Page</h1>
+                                    </div>
+                                    <?= $this->session->flashdata('flash'); ?>
+									<?= $this->session->flashdata('message'); ?>
+                                    <form class="user" action="<?= base_url(); ?>c_authentication/login" method="post">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="email" name="emp_id" aria-describedby="emailHelp"
+                                        placeholder="Enter Employee ID" value="<?= set_value('email'); ?>" ><?= form_error('email', '<small class="text-danger pl-3">', '</small>');?>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user"
+                                                id="password" name="password" placeholder="Password" ><?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
+                                        </div>
+                                       
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Login
+									</button>
+                                    </form>
+                                    <hr> 
+                                   
+									
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
 
-	<!-- Primary Page Layout -->
+        </div>
 
-	<div class="container">
-		
-		<div class="form-bg">
-			<?= form_open('login'); ?>
-				<h2>Login</h2>
-				<p><input type="text" placeholder="Employee ID" name="emp_id"></p>
-				<p><input type="password" placeholder="Password" name="password"></p>
-				<button type="submit"></button>
-			<?= form_close(); ?>
-		</div>
-
-
-        <?php echo validation_errors(); ?>
-	
-		<p class="forgot">Forgot your password? <a href="">Click here to reset it.</a></p>
-
-
-	</div><!-- container -->
-
-	<!-- JS  -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
-	<script>window.jQuery || document.write("<script src='js/jquery-1.5.1.min.js'>\x3C/script>")</script>
-	<script src="js/app.js"></script>
-	
-<!-- End Document -->
-</body>
-</html>
+    </div>

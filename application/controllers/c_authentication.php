@@ -14,7 +14,7 @@ class C_authentication extends CI_Controller {
         // die('anda sudah di halaman login! silahkan login');
 
         if($this->M_authentication->is_LoggedIn()){
-            redirect('approve');    
+            redirect('ecr');    
         }
 
         $this->form_validation->set_rules('emp_id', 'Employee ID', 'required|callback_checkEmployeeID');
@@ -25,7 +25,11 @@ class C_authentication extends CI_Controller {
 
         // die($this->db->last_query());
         if($this->form_validation->run() === false){
-            $this->load->view('v_login');
+            $data['title'] = 'PT CLADTEK BI-METAL MANUFACTURING';
+	 			$this->load->view('templates/header', $data);
+                 $this->load->view('v_login');
+				$this->load->view('templates/footer');
+           
         } 
 
         else {
@@ -40,7 +44,7 @@ class C_authentication extends CI_Controller {
                 redirect('hrd');
             }
             else{
-                redirect('approve');
+                redirect('ecr');
             }
             
         }
@@ -50,7 +54,7 @@ class C_authentication extends CI_Controller {
     {
         // unset($_SESSION['user_id'], $_SESSION['logged_in']);
         $this->session->sess_destroy();
-        redirect('ecr');
+        redirect('login');
     }
 
     public function checkEmployeeID($emp_id)
@@ -75,5 +79,43 @@ class C_authentication extends CI_Controller {
         
         return true;
     }
+   
 
+    public function change()
+    {
+        $data['title'] = 'Change Password';
+        $data['admin'] = $this->db->get_where('account', ['emp_id' =>
+        $this->session->userdata('emp_id')])->row_array();
+
+        $this->form_validation->set_rules('current_password', 'Current Password', 'required|trim');
+        $this->form_validation->set_rules('new_password1', 'New Password', 'required|trim|min_length[3]|matches[new_password2]');
+        $this->form_validation->set_rules('new_password2', 'Confirm New Password', 'required|trim|min_length[3]|matches[new_password1]');
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('v_changepass', $data);
+        } else {
+            $current_password = $this->input->post('current_password');
+            $new_password = $this->input->post('new_password1');
+
+            if (password_verify($current_password, $data['account']['password'])) {
+                $this->session->set_flashdata('flash', '<div class="alert alert-danger" role="alert"> Wrong current password!</div>');
+                redirect('c_authentication/change');
+            } else {
+                if ($current_password == $new_password) {
+                    $this->session->set_flashdata('flash', '<div class="alert alert-danger" role="alert"> New password cannot be the same as current password! </div>');
+                    redirect('c_authentication/change');
+                } else {
+
+                    $password_hash = md5($new_password);
+
+                    $this->db->set('password', $password_hash);
+                    $this->db->where('emp_id', $this->session->userdata('emp_id'));
+                    $this->db->update('account');
+
+                    $this->session->set_flashdata('flash', '<div class="alert alert-success" role="alert">Password changed!</div>');
+                    redirect('c_authentication/change');
+                }
+            }
+        }
+    }
 }

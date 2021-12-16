@@ -12,10 +12,14 @@ class GeneratePdfController extends CI_Controller {
 
     function index()
     {
-        $this->load->library('pdf');
-        $data['input'] = $this->m_index->tampil();
-        $html = $this->load->view('GeneratePdfView', $data, [], true);
+		$empid=$this->uri->segment(3);
+		$this->load->library('pdf');
+		//$track= $this->Main_model->view_detail('oc', array('TrackingNum' => $trackid ))->row_array();  
+        $emp= $this->m_index->tampil2('input', array('Employee_ID' => $empid))->row();
+        $data = array('input'=> $emp);  
+		$html = $this->load->view('GeneratePdfView', $data,true);
         $this->pdf->createPDF($html, 'mypdf', false);
+		//echo json_encode($emp);
     }
 }
 ?>

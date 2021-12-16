@@ -23,11 +23,15 @@
 
 <body>
 	<br>
+	
 	<div class="container-fluid">
 		<form class="form-control" method='POST' action='c_index/simpan' enctype='multipart/form-data'>
 			<img class="logo" src="./assets/Photo/clogo.JPEG">
 			<h2 class="judul">Employee Change Record</h2> 	
-			<a href="<?= base_url('hrd'); ?>" class="btn btn-primary" style=" float: right; margin-top: -65px;">Login</a>
+			<h4 class="name" style=" float: right; margin-top: -120px;"><?= $_SESSION['full_name']; ?> </h4>
+			<h4 class="name" style=" float: right; margin-top: -95px;"><?= ucfirst($_SESSION['role']); ?></h4>
+			<a href="<?= base_url('logout'); ?>" class="btn btn-primary" style=" float: right; margin-top: -65px;">Logout</a>
+			<a href="<?= base_url('c_authentication/change'); ?>" class="btn btn-danger" style=" float: right; margin-top: -20px;">change</a>
 			<select class="form-select" name="ops_employee">
 				<option value="NULL">Choice..</option>
 				<?php
@@ -56,7 +60,7 @@
 					<td>:</td>
 					<td><select id="SelectEmpId" name="emp_id[]" class="form-control select2">
 									<!-- <option selected="selected">ID Parts</option> -->
-								</select></td>
+							</select></td>
 					<td><label for="">Effective Date of Change</label></td>
 					<td>:</td>
 					<td><input class="form-control" type="date" name="txt_effective"></td>
@@ -70,6 +74,37 @@
 					<td><input class="form-control" type="text" name="txt_reason"></td>
 				</tr>
 			</table>
+
+			<tr>
+				<td>
+				<label for="">ID Manager</label></td>
+					<td>:</td>
+					<td><select id="SelectManid" name="managerid[]" class="form-control select2">
+									<!-- <option selected="selected">ID Parts</option> -->
+							</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+				<label for="">ID General Manager/CEO</label></td>
+					<td>:</td>
+					<td><select id="SelectCeoid" name="ceoid[]" class="form-control select2">
+									<!-- <option selected="selected">ID Parts</option> -->
+							</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+				<label for="">ID HRD</label></td>
+					<td>:</td>
+					<td><select id="SelectHrdid" name="hrdid[]" class="form-control select2">
+									<!-- <option selected="selected">ID Parts</option> -->
+							</select>
+				</td>
+			</tr>
+			
 			<br><br>
 			<!-- Table Checkbox -->
 			<table class="table table-secondary table-striped table-hover">
@@ -276,8 +311,8 @@
 					<td>Requested by a</td>
 					<?php if (@$_SESSION['role'] == 'hrd' || @$_SESSION['role'] == 'ceo' || @$_SESSION['role'] == 'hod') { ?> 
 					<td>Agreed by <br> <b>Manager/HOD</b></td>
-					<td>Reviewed by <br> <b>HRD</b></td>
 					<td>Approved by <br> <b>General Manager/CEO</b></td>
+					<td>Reviewed by <br> <b>HRD</b></td>
 
 					<?php } ?>
 				</tr>
@@ -300,10 +335,6 @@
 						<input class="btn btn-primary" name="cek_acc1" id="myCheck2" value="acc" type="checkbox"
 							onclick="myFunction2()">
 						<p id="text2" style="display:none">APPROVE!</p>
-					</td>
-					<td>
-					
-						<p id="text2" style="display:none">RIJECT!</p>
 					</td>
 					<td>
 						<img id="blah3"  width="200px" height="200px"  />
@@ -424,6 +455,109 @@
 				$('[name="txt_name"]').val(response[0].fullname);
 				$('[name="txt_designantion"]').val(response[0].designation);
 				$('[name="txt_date"]').val(response[0].doj);
+           },
+           cache: true,
+         },
+
+    });
+
+	// $('#datetimepicker2').datepicker({
+    //     format: 'dd / mm / yyyy',
+    //     startDate: '-3d'
+    // });
+</script>
+
+<script>
+	// tambah untuk menampilkan data dari field "_To"
+	 $('#SelectManid').select2({
+    //   theme: 'bootstrap4',
+      minimumInputLength: 1,
+      ajax: { 
+           url: '<?php echo site_url('c_index/get_autocompleteManager/?');?>',
+           type: "post",
+           dataType: 'json',
+           delay: 250,
+           data: function (params) {
+              return {
+                searchTerm: params.term // search term
+              };
+           },
+           processResults: function (response) {
+              return {
+                 results: response
+              };
+           },
+		   success:function (response){
+           },
+           cache: true,
+         },
+
+    });
+
+	// $('#datetimepicker2').datepicker({
+    //     format: 'dd / mm / yyyy',
+    //     startDate: '-3d'
+    // });
+</script>
+
+<script>
+	// tambah untuk menampilkan data dari field "_To"
+	 $('#SelectCeoid').select2({
+    //   theme: 'bootstrap4',
+      minimumInputLength: 1,
+      ajax: { 
+           url: '<?php echo site_url('c_index/get_autocompleteCeo/?');?>',
+           type: "post",
+           dataType: 'json',
+           delay: 250,
+           data: function (params) {
+              return {
+                searchTerm: params.term // search term
+              };
+           },
+           processResults: function (response) {
+              return {
+                 results: response
+              };
+           },
+		   success:function (response){
+           },
+           cache: true,
+         },
+
+    });
+
+	// $('#datetimepicker2').datepicker({
+    //     format: 'dd / mm / yyyy',
+    //     startDate: '-3d'
+    // });
+</script>
+
+<script>
+	// tambah untuk menampilkan data dari field "_To"
+	 $('#SelectHrdid').select2({
+    // theme: 'bootstrap4',
+      minimumInputLength: 2,
+      ajax: { 
+           url: '<?php echo site_url('c_index/get_autocompleteHrd/?');?>',
+           type: "post",
+           dataType: 'json',
+           delay: 250,
+           data: function (params) {
+              return {
+                searchTerm: params.term // search term
+              };
+           },
+           processResults: function (response) {
+              return {
+                 results: response
+              };
+           },
+		   success:function (response){
+                // console.log(response);
+				// $('[name="txt_name"]').val(response[0].fullname);
+				// $('[name="txt_designantion"]').val(response[0].designation);
+				// $('[name="txt_date"]').val(response[0].doj);
            },
            cache: true,
          },

@@ -15,211 +15,101 @@
     <br>
     <div>
 <form method='POST' action='c_index/simpan'>
-        <h2 >Employee Change Record</h2>
-            <select class="form-select" name="ops_employee">
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <option value=".$n->option.">".$n->option."</option>";
-                            }
-                        }else{
-                    echo"<option>EMPTY!</option>";
-                }?>
-            </select>
+    <h2>Employee Change Record</h2>
+        <table>
+		<td><input type="text" value='<?php echo $input->option?>'></td>
+		 
+		</table>
 <br><br>
         <table>
             <tr>
-                <td><label for="">Name</label></td>
+                <td><label>Name</label></td>
                 <td>:</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Name."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><label for="">Date of Joining</label></td>
+                <td><?php echo $input->Name;?></td>    
+                <td><label>Date of Joining</label></td>
                 <td>:</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Date_of_Joining."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
+                <td><?php echo $input->Date_of_Joining;?></td> 
+            </tr> 
+            <tr>
+                <td><label>Employee ID</label></td>
+                <td>:</td>
+                <td><?php echo $input->Employee_ID;?></td>  
+                <td><label>Effective Date of Change</label></td>
+                <td>:</td>
+				<td><?php echo $input->Effective_Date_of_Change;?></td> 
             </tr>
             <tr>
-                <td><label for="">Employee ID</label></td>
+                <td><label>Designantion</label></td>
                 <td>:</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Employee_ID."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><label for="">Effective Date of Change</label></td>
+                <td><?php echo $input->Designantion;?></td> 
+                <td><label>Reason of Change</label></td>
                 <td>:</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Effective_Date_of_Change."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-            </tr>
-            <tr>
-                <td><label for="">Designantion</label></td>
-                <td>:</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Designantion."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><label for="">Reason of Change</label></td>
-                <td>:</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Reason_for_Change."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
+                <td><?php echo $input->Reason_for_Change;?></td>
             </tr>
         </table>
 <br><br>
     <!-- Table Checkbox -->
         <table>
             <tr>
-                <td>Tick</td>
+                <td>No</td>
                 <td>Description</td>
                 <td>From</td>
                 <td>To</td>
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>1.  Employment Status(i.e. Permanent/Contract/Other)</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Employment_Status."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="text" name=""></td>
+                <td>1.</td>
+                <td>Employment Status(i.e. Permanent/Contract/Other)</td>
+                <td><?php echo $input->Employment_Status;?></td>
+                <td><?php echo $input->Employment_Status_To;?></td>   
+                
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>2.  Department</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Department."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="text" name=""></td>
+                <td>2.</td>
+                <td>Department</td>
+               <td><?php echo $input->Department;?></td> 
+               <td><?php echo $input->Department_To;?></td> 
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>3.  Division/ Section / Station</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Division_Section_Station."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="text" name=""></td>
+                <td>3.</td>   
+                <td>Division/ Section / Station</td>
+				<td><?php echo $input->Division_Section_Station;?></td> 
+                <td><?php echo $input->Division_Section_Station_To;?></td> 
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>4.  Immediate Superior</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Immediate_Superior."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="text" name=""></td>
+                <td>4.</td>                                                         
+                <td>Immediate Superior</td>
+				<td><?php echo $input->Immediate_Superior;?></td> 
+                <td><?php echo $input->Immediate_Superior_To;?></td>
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>5.  Designation *</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Des."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="text" name=""></td>
+                <td>5.</td>
+                <td>Designation *</td>
+               <td><?php echo $input->Des;?></td> 
+               <td><?php echo $input->Des_To;?></td>
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>6.  Basic Salary *</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Basic_Salary."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="number" name=""></td>
+                <td>6.</td>
+                <td>Basic Salary *</td>
+                <td><?php echo $input->Basic_Salary;?></td> 
+                <td><?php echo $input->Basic_Salary_To;?></td>
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>7.  Allowances  Amount *</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Allowances_Amount."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="number" name=""></td>
+                <td>7.</td>
+                <td>Allowances  Amount *</td>
+                <td><?php echo $input->Allowances_Amount;?></td> 
+                <td><?php echo $input->Allowances_Amount_To;?></td>
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>8.  Overtime Rate (Hourly Rate)</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Overtime_Rate."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="number" name=""></td>
+                <td>8.</td>
+                <td>Overtime Rate (Hourly Rate)</td>
+                <td><?php echo $input->Overtime_Rate;?></td> 
+                <td><?php echo $input->Overtime_Rate_To;?></td>
             </tr>
             <tr>
-                <td><input type="checkbox"></td>
-                <td>9.  Others</td>
-                <?php if (! empty($input)) {
-                    foreach ($input as $n) {
-                        echo "
-                            <td><input value=".$n->Others."></td>";
-                            }
-                        }else{
-                    echo"<td align='center'>EMPTY!</td>";
-                }?>
-                <td><input type="text" name=""></td>
+                <td>9.</td>
+                <td>Others</td>
+                <td><?php echo $input->Others;?></td>  
+                <td><?php echo $input->Others_To;?></td>
             </tr>
         </table>
 <br>
@@ -232,34 +122,22 @@
             </tr>
             <tr>
                 <td>
-                    <input type='file' onchange="readURL(this);" />
-                    <img id="blah" alt="" />
-                    <input name="cek_acc" id="myCheck" value="acc" type="checkbox" onclick="myFunction()">
-                    <p id="text" style="display:none">APPROVE!</p>
+                    <p><?php echo $input->request_img;?></p>
                 </td>
                 <td>
-                    <input type='file' onchange="readURL(this);" />
-                    <img id="blah" alt="" />
-                    <input name="cek_acc1" id="myCheck2" value="acc" type="checkbox" onclick="myFunction2()">
-                    <p id="text2" style="display:none">APPROVE!</p>
+                    <p> <?php echo $input->manager_img;?></p>
                 </td>
                 <td>
-                    <input type='file' onchange="readURL(this);" />
-                    <img id="blah" alt="" />
-                    <input name="cek_acc2" id="myCheck3" value="acc" type="checkbox" onclick="myFunction3()">
-                    <p id="text3" style="display:none">APPROVE!</p>
+                    <p> <?php echo $input->hrd_img;?></p>
                 </td>
                 <td>
-                    <input type='file' onchange="readURL(this);" />
-                    <img id="blah" alt="" />
-                    <input name="cek_acc3" id="myCheck4" value="acc" type="checkbox" onclick="myFunction4()">
-                    <p id="text4" style="display:none">APPROVE!</p>
+                    <p> <?php echo $input->ceo_img;?></p>
                 </td>
             </tr>
         </table>
 <br>
-        <label for="">Remark</label><br>
-        <textarea id="exampleFormControlTextarea1" rows="3" name="txt_remark"></textarea>  
+        <label >Remark</label><br>
+        <textarea id="exampleFormControlTextarea1" value='<?php echo $input->Remark?>' rows="3" value name="txt_remark"></textarea>  
 <br><br>
         <!-- <button n-primary">Submit</button> -->
 </form>
@@ -268,16 +146,9 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
 
-    <!-- <?php if (! empty($input)) {
-        foreach ($input as $i) {
-    echo "
-                <td>".$i->Name."</td>
-                <td>".$i->Name."</td>
-            </tr> ";
-        }
-    }else{
-        echo"<td align='center' colspan='2'>EMPTY!</td>";
-    }?> -->
+    
+	
+	
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
@@ -286,49 +157,52 @@
     <script src="./assets/js/script.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script>
-function myFunction() {
-  var checkBox = document.getElementById("myCheck");
-  var text = document.getElementById("text");
-  if (checkBox.checked == true){
-    text.style.display = "block";
-  } else {
-     text.style.display = "none";
-  }
-}
-        </script>
-        <script>
-function myFunction2() {
-  var checkBox = document.getElementById("myCheck2");
-  var text = document.getElementById("text2");
-  if (checkBox.checked == true){
-    text.style.display = "block";
-  } else {
-     text.style.display = "none";
-  }
-}
-        </script>
-        <script>
-function myFunction3() {
-  var checkBox = document.getElementById("myCheck3");
-  var text = document.getElementById("text3");
-  if (checkBox.checked == true){
-    text.style.display = "block";
-  } else {
-     text.style.display = "none";
-  }
-}
-        </script>
-        <script>
-function myFunction4() {
-  var checkBox = document.getElementById("myCheck4");
-  var text = document.getElementById("text4");
-  if (checkBox.checked == true){
-    text.style.display = "block";
-  } else {
-     text.style.display = "none";
-  }
-}
-        </script>
+		function myFunction() {
+		var checkBox = document.getElementById("myCheck");
+		var text = document.getElementById("text");
+		if (checkBox.checked == true){
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+		}
+    </script>
+	
+    <script>
+		function myFunction2() {
+		var checkBox = document.getElementById("myCheck2");
+		var text = document.getElementById("text2");
+		if (checkBox.checked == true){
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+		}
+    </script>
+	
+    <script>
+		function myFunction3() {
+		var checkBox = document.getElementById("myCheck3");
+		var text = document.getElementById("text3");
+		if (checkBox.checked == true){
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+		}
+    </script>
+    
+	<script>
+		function myFunction4() {
+		var checkBox = document.getElementById("myCheck4");
+		var text = document.getElementById("text4");
+		if (checkBox.checked == true){
+			text.style.display = "block";
+		} else {
+			text.style.display = "none";
+		}
+		}
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
