@@ -27,24 +27,25 @@
 		<form class="" method='POST' action='c_index/simpan'>
         <table id="example" class="table table-striped table-bordered" style="width:100%">
       <thead>
-	  	<a href="<?= base_url('login'); ?>" class="btn btn-primary" style=" float: right; margin-top: -20px;">Logout</a>
-          <h3 class="text-center font-weight-bold">Data ECR (Employee Change Record) </h3>
+	  	<div class="position-absolute top-20 end-4">
+	  	<a href="<?= base_url('login'); ?>" class="btn btn-primary " style=" float: right;  margin-top: -20px;">Logout</a></div>
+          <h3 class="text-center font-weight-bold" style="white-space:nowrap;" class="text-center" >Data ECR (Employee Change Record) </h3>
           <tr>
-		  	  <th colspan='1'>Options</th>
-			  <th colspan='1'>Name</th>
-              <th colspan='1'>Employment ID</th>
-			  <th colspan='1'>Designation</th>
-              <th colspan='2'>Employment Status</th>
-              <th colspan='2'>Department</th>
-              <th colspan='2'>Division/ Section / Station</th>
-              <th colspan='2'>Immediate Superior</th>
-              <th colspan='2'>Designation</th>
-			  <th colspan='2'>Basic Salary</th>
-			  <th colspan='2'>Allowances Amount</th>
-			  <th colspan='2'>Overtime Rate (Hourly Rate)</th>
-			  <th colspan='2'>Others</th>
-			  <th colspan='4'>Approve</th>
-			  <th colspan='2'>Actions</th>
+		  	  <th colspan='1' style="white-space:nowrap;" class="text-center" >Options</th>
+			  <th colspan='1' style="white-space:nowrap;" class="text-center" >Name</th>
+              <th colspan='1' style="white-space:nowrap;" class="text-center" >Employment ID</th>
+			  <th colspan='1' style="white-space:nowrap;" class="text-center" >Designation</th>
+              <th colspan='2' style="white-space:nowrap;" class="text-center" >Employment Status</th>
+              <th colspan='2' style="white-space:nowrap;" class="text-center" >Department</th>
+              <th colspan='2' style="white-space:nowrap;" class="text-center" >Division/ Section / Station</th>
+              <th colspan='2' style="white-space:nowrap;" class="text-center" >Immediate Superior</th>
+              <th colspan='2' style="white-space:nowrap;" class="text-center" >Designation</th>
+			  <th colspan='2' style="white-space:nowrap;" class="text-center" >Basic Salary</th>
+			  <th colspan='2' style="white-space:nowrap;" class="text-center" >Allowances Amount</th>
+			  <th colspan='2' style="white-space:nowrap;" class="text-center" >Overtime Rate (Hourly Rate)</th>
+			  <th colspan='2' style="white-space:nowrap;" class="text-center" >Others</th>
+			  <th colspan='4' style="white-space:nowrap;" class="text-center" >Approve</th>
+			  <th colspan='2' style="white-space:nowrap;" class="text-center" >Actions</th>
           </tr>
       </thead>
       <tbody>
@@ -56,28 +57,28 @@
 			  <td></td>
 			  <td></td>
 			  <td></td>
-		  	  <td>Form</td>
-              <td>To</td>
-              <td>Form</td>
-              <td>To</td>
-			  <td>Form</td>
-              <td>To</td>
-			  <td>Form</td>
-              <td>To</td>
-			  <td>Form</td>
-              <td>To</td>
-			  <td>Form</td>
-              <td>To</td>
-			  <td>Form</td>
-              <td>To</td>
-			  <td>Form</td>
-              <td>To</td>
-			  <td>Form</td>
-              <td>To</td>
-			  <td>Status Leader</td>
-			  <td>Status Manager</td>
-			  <td>Status HRD</td>
-			  <td>Status CEO</td>
+		  	  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+              <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap align=center>Form</td>
+              <td nowrap align=center>To</td>
+			  <td nowrap>Status Leader</td>
+			  <td nowrap>Status Manager</td>
+			  <td nowrap>Status HRD</td>
+			  <td nowrap>Status GM</td>
 			  <td colspan='2'>E/D/P</td>
           </tr>
 		  <tr>
@@ -133,6 +134,7 @@
 						}
 						return  '<button type="button" id="'.$id  .'"class="btn btn-success btnc" style="width"'.$tmp.'>
 						<img src="https://img.icons8.com/external-kiranshastry-gradient-kiranshastry/30/000000/external-check-banking-and-finance-kiranshastry-gradient-kiranshastry.png"/>
+
 						</button> <button type="button" id="'.$id  .'" class="btn btn-danger btnrc" '.$tmp.'>
 						<img src="https://img.icons8.com/ios-filled/30/000000/x.png"/></button>';
 					}
@@ -145,37 +147,36 @@
 				if (! empty($input)) {
 				foreach ($input as $i) {
 			echo "
-						<td>".$i->option."</td>
-						<td>".$i->Name."</td>
-						<td>".$i->Employee_ID."</td>
-						<td>".$i->Designantion."</td>
-						<td>".$i->Employment_Status."</td>
-						<td>".$i->Employment_Status_To."</td>
-						<td>".$i->Department."</td>
-						<td>".$i->Department_To."</td>
-						<td>".$i->Division_Section_Station."</td>
-						<td>".$i->Division_Section_Station_To."</td>
-						<td>".$i->Immediate_Superior."</td>
-						<td>".$i->Immediate_Superior_To."</td>
-						<td>".$i->Des."</td>
-						<td>".$i->Des_To."</td>
-						<td>".$i->Basic_Salary."</td>
-						<td>".$i->Basic_Salary_To."</td>
-						<td>".$i->Allowances_Amount."</td>
-						<td>".$i->Allowances_Amount_To."</td>
-						<td>".$i->Overtime_Rate."</td>
-						<td>".$i->Overtime_Rate_To."</td>
-						<td>".$i->Others."</td>
-						<td>".$i->Others_To."</td>
-						<td>".$i->request_img."</td>
-						<td>".checkstatusmanager($i->manager_img,$i->Employee_ID)."</td>
-						
-						<td>".checkstatushrd($i->hrd_img,$i->Employee_ID)."</td>
-						<td>".checkstatusceo($i->ceo_img, $i->Employee_ID)."</td>
-						<td>
-							<a href='".base_url("ubah/".$i->id_erc)."'<button type='button' class='btn btn-info'>EDIT</button></a>
-							<a href='".base_url("c_index/hapus/".$i->Employee_ID)."'><button type='button' class='btn btn-danger'>DELETE</button></a>
-							<a href='".base_url("GeneratePdfController/index/".$i->Employee_ID)."'<button type='button' class='btn btn-dark'>Print</button></a>
+						<td nowrap align=center>".$i->option."</td>
+						<td nowrap align=center>".$i->Name."</td>
+						<td nowrap align=center>".$i->Employee_ID."</td>
+						<td nowrap align=center>".$i->Designantion."</td>
+						<td nowrap align=center>".$i->Employment_Status."</td>
+						<td nowrap align=center>".$i->Employment_Status_To."</td>
+						<td nowrap align=center>".$i->Department."</td>
+						<td nowrap align=center>".$i->Department_To."</td>
+						<td nowrap align=center>".$i->Division_Section_Station."</td>
+						<td nowrap align=center>".$i->Division_Section_Station_To."</td>
+						<td nowrap align=center>".$i->Immediate_Superior."</td>
+						<td nowrap align=center>".$i->Immediate_Superior_To."</td>
+						<td nowrap align=center>".$i->Des."</td>
+						<td nowrap align=center>".$i->Des_To."</td>
+						<td nowrap align=center>".$i->Basic_Salary."</td>
+						<td nowrap align=center>".$i->Basic_Salary_To."</td>
+						<td nowrap align=center>".$i->Allowances_Amount."</td>
+						<td nowrap align=center>".$i->Allowances_Amount_To."</td>
+						<td nowrap align=center>".$i->Overtime_Rate."</td>
+						<td nowrap align=center>".$i->Overtime_Rate_To."</td>
+						<td nowrap align=center>".$i->Others."</td>
+						<td nowrap align=center>".$i->Others_To."</td>
+						<td nowrap align=center>".$i->request_img."</td>
+						<td nowrap align=center>".checkstatusmanager($i->manager_img,$i->Employee_ID)."</td>
+						<td nowrap align=center>".checkstatushrd($i->hrd_img,$i->Employee_ID)."</td>
+						<td nowrap align=center>".checkstatusceo($i->ceo_img, $i->Employee_ID)."</td>
+						<td nowrap>
+							<a href='".base_url("ubah/".$i->id_erc)."'<button type='button' class='label label-info'>EDIT</button></a>
+							<a href='".base_url("c_index/hapus/".$i->Employee_ID)."'<button type='button' class='label label-danger'>DELETE</button></a>
+							<a href='".base_url("GeneratePdfController/index/".$i->Employee_ID)."'<button type='button' class='label label-dark'>PRINT</button></a>
 						</td>
 					</tr> ";
 				}
