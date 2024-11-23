@@ -309,7 +309,7 @@
 			<table class="acc">
 				<tr>
 					<td>Requested by a</td>
-					<?php if (@$_SESSION['role'] == 'hrd' || @$_SESSION['role'] == 'ceo' || @$_SESSION['role'] == 'hod') { ?> 
+					<?php if (@$_SESSION['role'] == 'ceo' || @$_SESSION['role'] == 'hod') { ?> 
 					<td>Agreed by <br> <b>Manager/HOD</b></td>
 					<td>Approved by <br> <b>General Manager/CEO</b></td>
 					<td>Reviewed by <br> <b>HRD</b></td>
@@ -319,15 +319,15 @@
 				
 				<tr>
 					<td>
-						<img id="blah1"  width="200px" height="200px"  />
+						<!--<img id="blah1"  width="200px" height="200px"  />
 						<input class="form-control" type="file" 
-						    onchange="document.getElementById('blah1').src = window.URL.createObjectURL(this.files[0])" name="imgApprove1">
+						    onchange="document.getElementById('blah1').src = window.URL.createObjectURL(this.files[0])" name="imgApprove1">-->
 						<input class="btn btn-primary" name="cek_acc" id="myCheck" value="acc" type="checkbox"
 							onclick="myFunction()">
 						<p id="text" style="display:none">APPROVE!</p>
 					</td>
 
-					<?php if (@$_SESSION['role'] == 'hrd' || @$_SESSION['role'] == 'ceo' || @$_SESSION['role'] == 'hod') { ?>
+					<?php if (@$_SESSION['role'] == 'ceo' || @$_SESSION['role'] == 'hod') { ?>
 					<td>
 						<img id="blah2"  width="200px" height="200px"  />
 						<input class="form-control" type="file" 

@@ -1,21 +1,23 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_index extends CI_Model {
+class M_index extends CI_Model
+{
 
-	public function getDataByField($table, $key, $value){       
-        $query = $this->db->get_where($table, array($key=>$value));
-        if(!empty($query->result_array())){
-            return $query->result_array();
-            // die($query->row_array());
-        }
+	public function getDataByField($table, $key, $value)
+	{
+		$query = $this->db->get_where($table, array($key => $value));
+		if (!empty($query->result_array())) {
+			return $query->result_array();
+			// die($query->row_array());
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	public function simpan($data)
 	{
-		if($this->db->insert('input', $data)){
+		if ($this->db->insert('input', $data)) {
 			return TRUE;
 		}
 
@@ -35,20 +37,20 @@ class M_index extends CI_Model {
 		return $this->db->get('input')->result();
 		//return $this->db->get_where($table, $data);
 	}
-	
-		public function tampil2($table, $data)
+
+	public function tampil2($table, $data)
 	{
 		//return $this->db->get('input')->result();
 		return $this->db->get_where($table, $data);
 	}
 
 	public function tampilById($id_erc)
-	{ 
+	{
 		$this->db->select('*');
 		$this->db->from('input');
-		$this->db->join('departement','input.Department_To = departement.id_departement');
-		$this->db->join('division','departement.id_departement = division.department_id');
-		$this->db->where('id_erc',$id_erc);
+		$this->db->join('departement', 'input.Department_To = departement.id_departement', 'left');
+		$this->db->join('division', 'departement.id_departement = division.department_id', 'left');
+		$this->db->where('id_erc', $id_erc);
 		$data = $this->db->get()->result();
 		return $data;
 	}
@@ -72,7 +74,7 @@ class M_index extends CI_Model {
 	{
 		return $this->db->get('choise')->result();
 	}
-	
+
 	public function edit($where)
 	{
 		return $this->db->get_where('input', $where)->result();
@@ -83,147 +85,158 @@ class M_index extends CI_Model {
 		return $this->db->get_where('employee', $where)->result();
 	}
 
-	public function update_data($data,$where)
-	{	
-		$this->db->where('Employee_ID',$where);
+	public function update_data($data, $where)
+	{
+		$this->db->where('Employee_ID', $where);
+		$this->db->update('input', $data);
+	}
+
+	public function updateInputData($data, $id)
+	{
+		$this->db->where('id_erc', $id);
 		$this->db->update('input', $data);
 	}
 
 	public function hapus($where)
 	{
-		$this->db->delete('input',$where);
+		$this->db->delete('input', $where);
 	}
 
-	function search_Employee($id_employee){
-        // $this->db->select('*');
-        $this->db->like('employee_number', $id_employee , 'both');
-        $this->db->order_by('employee_number', 'ASC');
-        $this->db->limit(3);
-        $raw_result = $this->db->get('employee')->result_array();
-        // return $this->db->get('tbl_rack')->result();
+	function search_Employee($id_employee)
+	{
+		// $this->db->select('*');
+		$this->db->like('employee_number', $id_employee, 'both');
+		$this->db->order_by('employee_number', 'ASC');
+		$this->db->limit(3);
+		$raw_result = $this->db->get('employee')->result_array();
+		// return $this->db->get('tbl_rack')->result();
 
-        $data = array();
-        foreach($raw_result as $item){
+		$data = array();
+		foreach ($raw_result as $item) {
 			$date = new DateTime($item['Join_Date']);
 			$doj = $date->format('m/d/Y');
-            $data[] = array(
-                "id"    =>  $item['Employee_Number'], 
-                "text"  =>  $item['Employee_Number'],
+			$data[] = array(
+				"id"    =>  $item['Employee_Number'],
+				"text"  =>  $item['Employee_Number'],
 				"fullname"  =>  $item['Name'],
 				"designation"  =>  $item['Designation'],
 				"doj"  => $doj,
-            );
-        }
+			);
+		}
 
 		// $data = var_dump($raw_result);
-        return $data;
-    }
+		return $data;
+	}
 
-	function search_Manager($id_employee){
-        // $this->db->select('*');
+	function search_Manager($id_employee)
+	{
+		// $this->db->select('*');
 		$this->db->select('*');
 		$this->db->join('account', 'account.emp_id = employee.Employee_Number');
-        $this->db->like('employee_number', $id_employee , 'both');
-		$this->db->or_like('account.full_name', $id_employee , 'both');
+		$this->db->like('employee_number', $id_employee, 'both');
+		$this->db->or_like('account.full_name', $id_employee, 'both');
 		// $this->db->where('role', 'manager');
-        $this->db->order_by('employee_number', 'ASC');
-        $this->db->limit(3);
-        $raw_result = $this->db->get('employee')->result_array();
-        // return $this->db->get('tbl_rack')->result();
+		$this->db->order_by('employee_number', 'ASC');
+		$this->db->limit(3);
+		$raw_result = $this->db->get('employee')->result_array();
+		// return $this->db->get('tbl_rack')->result();
 
-        $data = array();
-        foreach($raw_result as $item){
+		$data = array();
+		foreach ($raw_result as $item) {
 			$date = new DateTime($item['Join_Date']);
 			$doj = $date->format('m/d/Y');
-            $data[] = array(
-				"id"    =>  sprintf('%04d', $item['Employee_Number']), 
-                "text"  =>  sprintf('%04d', $item['Employee_Number']).' - '.$item['full_name'],
+			$data[] = array(
+				"id"    =>  sprintf('%04d', $item['Employee_Number']),
+				"text"  =>  sprintf('%04d', $item['Employee_Number']) . ' - ' . $item['full_name'],
 				"fullname"  =>  $item['Name'],
 				"designation"  =>  $item['Designation'],
 				"doj"  => $doj,
-            );
-        }
+			);
+		}
 
 		// $data = var_dump($raw_result);
-        return $data;
-    }
+		return $data;
+	}
 
-	function search_Ceo($id_employee){
-        // $this->db->select('*');
+	function search_Ceo($id_employee)
+	{
+		// $this->db->select('*');
 		$this->db->select('*');
 		$this->db->join('account', 'account.emp_id = employee.Employee_Number');
 		// $this->db->where('account.role', 'ceo');
-        $this->db->like('employee_number', $id_employee , 'both');
-		$this->db->or_like('account.full_name', $id_employee , 'both');
-        $this->db->order_by('employee_number', 'ASC');
-        $this->db->limit(3);
-        $raw_result = $this->db->get('employee')->result_array();
-        // return $this->db->get('tbl_rack')->result();
+		$this->db->like('employee_number', $id_employee, 'both');
+		$this->db->or_like('account.full_name', $id_employee, 'both');
+		$this->db->order_by('employee_number', 'ASC');
+		$this->db->limit(3);
+		$raw_result = $this->db->get('employee')->result_array();
+		// return $this->db->get('tbl_rack')->result();
 
-        $data = array();
-        foreach($raw_result as $item){
+		$data = array();
+		foreach ($raw_result as $item) {
 			$date = new DateTime($item['Join_Date']);
 			$doj = $date->format('m/d/Y');
-            $data[] = array(
-				"id"    =>  sprintf('%04d', $item['Employee_Number']), 
-                "text"  =>  sprintf('%04d', $item['Employee_Number']).' - '.$item['full_name'],
+			$data[] = array(
+				"id"    =>  sprintf('%04d', $item['Employee_Number']),
+				"text"  =>  sprintf('%04d', $item['Employee_Number']) . ' - ' . $item['full_name'],
 				"fullname"  =>  $item['Name'],
 				"designation"  =>  $item['Designation'],
 				"doj"  => $doj,
-            );
-        }
+			);
+		}
 
 		// $data = var_dump($raw_result);
-        return $data;
-    }
+		return $data;
+	}
 
-	function search_Hrd($id_employee){
-        // $this->db->select('*');
+	function search_Hrd($id_employee)
+	{
+		// $this->db->select('*');
 		$this->db->select('*');
 		$this->db->join('account', 'account.emp_id = employee.Employee_Number');
-        $this->db->like('employee_number', $id_employee , 'both');
-		$this->db->or_like('account.full_name', $id_employee , 'both');
+		$this->db->like('employee_number', $id_employee, 'both');
+		$this->db->or_like('account.full_name', $id_employee, 'both');
 		// $this->db->where('account.role', 'hrd');
-        $this->db->order_by('employee_number', 'ASC');
-        $this->db->limit(3);
-        $raw_result = $this->db->get('employee')->result_array();
-        // return $this->db->get('tbl_rack')->result();
+		$this->db->order_by('employee_number', 'ASC');
+		$this->db->limit(3);
+		$raw_result = $this->db->get('employee')->result_array();
+		// return $this->db->get('tbl_rack')->result();
 
-        $data = array();
-        foreach($raw_result as $item){
+		$data = array();
+		foreach ($raw_result as $item) {
 			$date = new DateTime($item['Join_Date']);
 			$doj = $date->format('m/d/Y');
-            $data[] = array(
-                "id"    =>  sprintf('%04d', $item['Employee_Number']), 
-                "text"  =>  sprintf('%04d', $item['Employee_Number']).' - '.$item['full_name'],
+			$data[] = array(
+				"id"    =>  sprintf('%04d', $item['Employee_Number']),
+				"text"  =>  sprintf('%04d', $item['Employee_Number']) . ' - ' . $item['full_name'],
 				"fullname"  =>  $item['Name'],
 				"designation"  =>  $item['Designation'],
 				"doj"  => $doj,
-            );
-        }
+			);
+		}
 
 		// $data = var_dump($raw_result);
-        return $data;
-    }
+		return $data;
+	}
 
-	function searchErc($id_employee){
-        // $this->db->select('*');
+	function searchErc($id_employee)
+	{
+		// $this->db->select('*');
 		$this->db->from('input');
 		$this->db->join('employee', 'Employee_ID = Employee_Number');
 		$this->db->join('division', 'Division_Section_Station = id_division ');
-        // $this->db->where('Employee_ID', $id_employee );
-        $this->db->order_by('Employee_ID', 'ASC');
-        $this->db->limit(3);
-        $raw_result = $this->db->get()->result_array();
-        // return $this->db->get('tbl_rack')->result();
+		// $this->db->where('Employee_ID', $id_employee );
+		$this->db->order_by('Employee_ID', 'ASC');
+		$this->db->limit(3);
+		$raw_result = $this->db->get()->result_array();
+		// return $this->db->get('tbl_rack')->result();
 		// die($this->db->last_query());
-        $data = array();
-        foreach($raw_result as $item){
-            $data[] = array(
-				"Employee_ID"    				=>  $item['Employee_ID'], 
-				"Reason_for_Change"    			=>  $item['Reason_for_Change'], 
-                "Designation"    				=>  $item['Designantion'], 
-                "Employment_Status"  			=>  $item['Employment_Status'],
+		$data = array();
+		foreach ($raw_result as $item) {
+			$data[] = array(
+				"Employee_ID"    				=>  $item['Employee_ID'],
+				"Reason_for_Change"    			=>  $item['Reason_for_Change'],
+				"Designation"    				=>  $item['Designantion'],
+				"Employment_Status"  			=>  $item['Employment_Status'],
 				"Employment_Status_To"  		=>  $item['Employment_Status_To'],
 				"Department"  					=>  $item['Department'],
 				"Department_To"  				=>  $item['Department_To'],
@@ -241,18 +254,18 @@ class M_index extends CI_Model {
 				"Overtime_Rate_To"  			=>  $item['Overtime_Rate_To'],
 				"Others"  						=>  $item['Others'],
 				"Others_To"  					=>  $item['Others_To'],
-            );
-        }
+			);
+		}
 
 		// $data = var_dump($raw_result);
-        return $data;
-    }
+		return $data;
+	}
 
-	function ambil_DivisionCategory($div_id){
-        $query = $this->db->get_where('division', array('department_id' => $div_id));
-        return $query;
-    }
-
+	function ambil_DivisionCategory($div_id)
+	{
+		$query = $this->db->get_where('division', array('department_id' => $div_id));
+		return $query;
+	}
 }
 
 /* End of file m_index.php */

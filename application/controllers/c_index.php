@@ -47,7 +47,8 @@ class C_index extends CI_Controller {
 			$type = $this->input->post('type');
 		}
 
-		// die(var_dump($role));
+		// $data_input = $this->m_index->tampil2('input' , ['id_erc' => $id])->result()[0];
+		// die(var_dump($data->id_erc));
 
 		switch ($role) {
 
@@ -62,11 +63,14 @@ class C_index extends CI_Controller {
 			case 'hrd':
 					if ($type == 'acc') {
 						$data = array(
-							'hrd_img' => 'acc'
+							'hrd_img' => 'acc',
+							'ceo_img' => 'acc'
 						);
+							
 					}elseif ($type == 'reject') {
 						$data = array(
-							'hrd_img' => 'reject'
+							'hrd_img' => 'reject',
+							'ceo_img' => 'reject'
 						);
 					}
 				break;
@@ -74,10 +78,14 @@ class C_index extends CI_Controller {
 			case 'ceo':
 					if ($type == 'acc') {
 						$data = array(
-							'ceo_img' => 'acc'
+							'ceo_img' => 'acc',
+							'hrd_img' => 'acc',
+							'manager_img'=> 'acc',
 						);
 					}elseif ($type == 'reject') {
 						$data = array(
+							'hrd_img' => 'reject',
+							'manager_img'=> 'reject',
 							'ceo_img' => 'reject'
 						);
 					}
@@ -90,13 +98,15 @@ class C_index extends CI_Controller {
 						);
 					}elseif ($type == 'reject') {
 						$data = array(
-							'manager_img' => 'reject'
+							'manager_img' => 'reject',
+							'hrd_img' => 'reject',
+							'ceo_img' => 'reject'
 						);
 					}
 				break;
 		}
 
-		$this->m_index->update_data($data , $id);
+		$this->m_index->updateInputData($data , $id);
 
 		switch ($role) {
 			case 'user':
@@ -187,11 +197,13 @@ class C_index extends CI_Controller {
 				'nama' => $dAcc['full_name'], 
 			);
 
-			if ($this->sendEmail($data)) {
-				redirect('login'); 
-			}else {
-				die('Failed To send email');
-			}
+			// if ($this->sendEmail($data)) {
+		echo "<script>alert('Data saved successfully!')</script>";
+		redirect(base_url('c_index'),'refresh');
+				// redirect('login'); aaaa
+			// }else {
+			// 	die('Failed To send email');
+			// }
 		}
 
 		
@@ -250,7 +262,7 @@ class C_index extends CI_Controller {
 			$amount1		= $this->input->post('num_amount_to');
 			// $overtime	 	= $this->input->post('num_overtime');
 			$overtime1	 	= $this->input->post('num_overtime_to');
-			// $other 		 	= $this->input->post('txt_other');
+			$other 		 	= $this->input->post('txt_other');
 			$other1 		= $this->input->post('txt_other_to');
 			// $remark 		= $this->input->post('txt_remark');
 			// $acc 			= $this->input->post('cek_acc');
@@ -278,7 +290,7 @@ class C_index extends CI_Controller {
 				// 'Employment_Status' => $status,
 				'Employment_Status_To' => $status1,
 				// 'Department' => $departement,
-				'Department_To' => $departement1,
+				'Department_To' => $departement1 ?? null,
 				// 'Division_Section_Station' => $division,
 				'Division_Section_Station_To' => $division1,
 				// 'Immediate_Superior' => $immediate,
@@ -290,8 +302,8 @@ class C_index extends CI_Controller {
 				// 'Allowances_Amount' => $amount,
 				'Allowances_Amount_To' => $amount1,
 				// 'Overtime_Rate' => $overtime,
-				'Overtime_Rate_To' => $overtime1,
-				// 'Others' => $other,
+				'Overtime_Rate_To' => $overtime1,j
+				'Others' => $other,
 				'Others_To' => $other1,
 				// 'request_img' => $acc,
 				// 'manager_img' => $acc1,
@@ -304,6 +316,7 @@ class C_index extends CI_Controller {
 			redirect(base_url('hrd'));
 		}else {
 			$data['input'] = $this->m_index->tampilById($id_erc);
+			// die(var_dump($this->db->last_query()));
 
 			$data['status'] = $this->m_index->tampil_status();
 			$data['departement'] = $this->m_index->tampil_departement();
@@ -473,14 +486,18 @@ class C_index extends CI_Controller {
 			}		
 
 
-			redirect(base_url('logout'),'refresh');
+			echo "<script>alert('Data saved successfully!')</script>";
+			redirect(base_url('c_index'),'refresh');
+			// redirect(base_url('logout'),'refresh');
 		} else {
 			if($upload['result'] == "success"){ // Jika proses upload sukses
 
 				$data['request_img'] = $upload['file']['file_name'];
 
 				$this->m_index->simpan($data);
-				redirect(base_url('logout'),'refresh');
+				echo "<script>alert('Data saved successfully!')</script>";
+				redirect(base_url('c_index'),'refresh');
+				// redirect(base_url('logout'),'refresh');
 
 			}else{ // Jika proses upload gagal
 
