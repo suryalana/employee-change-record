@@ -262,7 +262,7 @@ class C_index extends CI_Controller {
 			$amount1		= $this->input->post('num_amount_to');
 			// $overtime	 	= $this->input->post('num_overtime');
 			$overtime1	 	= $this->input->post('num_overtime_to');
-			$other 		 	= $this->input->post('txt_other');
+			// $other 		 	= $this->input->post('txt_other');
 			$other1 		= $this->input->post('txt_other_to');
 			// $remark 		= $this->input->post('txt_remark');
 			// $acc 			= $this->input->post('cek_acc');
@@ -302,8 +302,8 @@ class C_index extends CI_Controller {
 				// 'Allowances_Amount' => $amount,
 				'Allowances_Amount_To' => $amount1,
 				// 'Overtime_Rate' => $overtime,
-				'Overtime_Rate_To' => $overtime1,j
-				'Others' => $other,
+				'Overtime_Rate_To' => $overtime1,
+				// 'Others' => $other,
 				'Others_To' => $other1,
 				// 'request_img' => $acc,
 				// 'manager_img' => $acc1,
@@ -542,33 +542,21 @@ class C_index extends CI_Controller {
     }
 
 	function get_autocompleteManager(){
-        if ($this->input->post('searchTerm')) {
-            $result = $this->m_index->search_Manager($this->input->post('searchTerm'));
+        $result = $this->m_index->search_Manager($this->input->post('searchTerm') ?? null);
 
-            echo json_encode($result);
-			// echo var_dump($result);
-			// echo $result;
-        }
+		echo json_encode($result);
     }
 
 	function get_autocompleteCeo(){
-        if ($this->input->post('searchTerm')) {
-            $result = $this->m_index->search_Ceo($this->input->post('searchTerm'));
+        $result = $this->m_index->search_Ceo($this->input->post('searchTerm') ?? null);
 
-            echo json_encode($result);
-			// echo var_dump($result);
-			// echo $result;
-        }
+		echo json_encode($result);
     }
 
 	function get_autocompleteHrd(){
-        if ($this->input->post('searchTerm')) {
-            $result = $this->m_index->search_Hrd($this->input->post('searchTerm'));
+        $result = $this->m_index->search_Hrd($this->input->post('searchTerm') ?? null);
 
-            echo json_encode($result);
-			// echo var_dump($result);
-			// echo $result;
-        }
+		echo json_encode($result);
     }
 
 	function get_DivisionCategory(){

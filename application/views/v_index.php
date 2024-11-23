@@ -471,7 +471,6 @@
 	// tambah untuk menampilkan data dari field "_To"
 	 $('#SelectManid').select2({
     //   theme: 'bootstrap4',
-      minimumInputLength: 1,
       ajax: { 
            url: '<?php echo site_url('c_index/get_autocompleteManager/?');?>',
            type: "post",
@@ -504,7 +503,6 @@
 	// tambah untuk menampilkan data dari field "_To"
 	 $('#SelectCeoid').select2({
     //   theme: 'bootstrap4',
-      minimumInputLength: 1,
       ajax: { 
            url: '<?php echo site_url('c_index/get_autocompleteCeo/?');?>',
            type: "post",
@@ -537,7 +535,6 @@
 	// tambah untuk menampilkan data dari field "_To"
 	 $('#SelectHrdid').select2({
     // theme: 'bootstrap4',
-      minimumInputLength: 2,
       ajax: { 
            url: '<?php echo site_url('c_index/get_autocompleteHrd/?');?>',
            type: "post",

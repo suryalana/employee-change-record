@@ -130,91 +130,117 @@ class M_index extends CI_Model
 
 	function search_Manager($id_employee)
 	{
-		// $this->db->select('*');
-		$this->db->select('*');
-		$this->db->join('account', 'account.emp_id = employee.Employee_Number');
-		$this->db->like('employee_number', $id_employee, 'both');
-		$this->db->or_like('account.full_name', $id_employee, 'both');
-		// $this->db->where('role', 'manager');
-		$this->db->order_by('employee_number', 'ASC');
-		$this->db->limit(3);
-		$raw_result = $this->db->get('employee')->result_array();
-		// return $this->db->get('tbl_rack')->result();
+		// Select all columns from the account table and the employee table
+		$this->db->select('account.*, employee.*'); // You can specify the columns you need
+		$this->db->from('account'); // Specify the main table
+
+		// Join with the employee table
+		$this->db->join('employee', 'account.emp_id = employee.Employee_Number', 'inner'); // Use inner join
+
+		// Add the condition to filter by role
+		$this->db->where('account.role', 'manager'); // Ensure to prefix with table name if necessary
+		if (!is_null($id_employee)) {
+			$this->db->where('account.emp_id', $id_employee); // Filter by employee ID
+		}
+
+		// Limit the results to 3
+		$this->db->limit(10);
+
+		// Execute the query and get the result
+		$raw_result = $this->db->get()->result_array();
+
+		// die(var_dump($this->db->last_query()));
 
 		$data = array();
 		foreach ($raw_result as $item) {
 			$date = new DateTime($item['Join_Date']);
 			$doj = $date->format('m/d/Y');
 			$data[] = array(
-				"id"    =>  sprintf('%04d', $item['Employee_Number']),
-				"text"  =>  sprintf('%04d', $item['Employee_Number']) . ' - ' . $item['full_name'],
-				"fullname"  =>  $item['Name'],
-				"designation"  =>  $item['Designation'],
-				"doj"  => $doj,
+				"id"          => sprintf('%04d', $item['emp_id']),
+				"text"        => sprintf('%04d', $item['emp_id']) . ' - ' . $item['full_name'],
+				"fullname"    => $item['full_name'],
+				"designation" => $item['Designation'],
+				"doj"         => $doj,
 			);
 		}
-
-		// $data = var_dump($raw_result);
 		return $data;
 	}
+
 
 	function search_Ceo($id_employee)
 	{
-		// $this->db->select('*');
-		$this->db->select('*');
-		$this->db->join('account', 'account.emp_id = employee.Employee_Number');
-		// $this->db->where('account.role', 'ceo');
-		$this->db->like('employee_number', $id_employee, 'both');
-		$this->db->or_like('account.full_name', $id_employee, 'both');
-		$this->db->order_by('employee_number', 'ASC');
-		$this->db->limit(3);
-		$raw_result = $this->db->get('employee')->result_array();
-		// return $this->db->get('tbl_rack')->result();
+		// Select all columns from the account table and the employee table
+		$this->db->select('account.*, employee.*'); // You can specify the columns you need
+		$this->db->from('account'); // Specify the main table
+
+		// Join with the employee table
+		$this->db->join('employee', 'account.emp_id = employee.Employee_Number', 'inner'); // Use inner join
+
+		// Add the condition to filter by role
+		$this->db->where('account.role', 'ceo'); // Ensure to prefix with table name if necessary
+		if (!is_null($id_employee)) {
+			$this->db->where('account.emp_id', $id_employee); // Filter by employee ID
+		}
+
+		// Limit the results to 3
+		$this->db->limit(10);
+
+		// Execute the query and get the result
+		$raw_result = $this->db->get()->result_array();
+
+		// die(var_dump($this->db->last_query()));
 
 		$data = array();
 		foreach ($raw_result as $item) {
 			$date = new DateTime($item['Join_Date']);
 			$doj = $date->format('m/d/Y');
 			$data[] = array(
-				"id"    =>  sprintf('%04d', $item['Employee_Number']),
-				"text"  =>  sprintf('%04d', $item['Employee_Number']) . ' - ' . $item['full_name'],
-				"fullname"  =>  $item['Name'],
-				"designation"  =>  $item['Designation'],
-				"doj"  => $doj,
+				"id"          => sprintf('%04d', $item['emp_id']),
+				"text"        => sprintf('%04d', $item['emp_id']) . ' - ' . $item['full_name'],
+				"fullname"    => $item['full_name'],
+				"designation" => $item['Designation'],
+				"doj"         => $doj,
 			);
 		}
-
-		// $data = var_dump($raw_result);
 		return $data;
 	}
 
+
 	function search_Hrd($id_employee)
 	{
-		// $this->db->select('*');
-		$this->db->select('*');
-		$this->db->join('account', 'account.emp_id = employee.Employee_Number');
-		$this->db->like('employee_number', $id_employee, 'both');
-		$this->db->or_like('account.full_name', $id_employee, 'both');
-		// $this->db->where('account.role', 'hrd');
-		$this->db->order_by('employee_number', 'ASC');
-		$this->db->limit(3);
-		$raw_result = $this->db->get('employee')->result_array();
-		// return $this->db->get('tbl_rack')->result();
+		// Select all columns from the account table and the employee table
+		$this->db->select('account.*, employee.*'); // You can specify the columns you need
+		$this->db->from('account'); // Specify the main table
+
+		// Join with the employee table
+		$this->db->join('employee', 'account.emp_id = employee.Employee_Number', 'inner'); // Use inner join
+
+		// Add the condition to filter by role
+		$this->db->where('account.role', 'hrd'); // Ensure to prefix with table name if necessary
+		if (!is_null($id_employee)) {
+			$this->db->where('account.emp_id', $id_employee); // Filter by employee ID
+		}
+
+		// Limit the results to 3
+		$this->db->limit(10);
+
+		// Execute the query and get the result
+		$raw_result = $this->db->get()->result_array();
+
+		// die(var_dump($this->db->last_query()));
 
 		$data = array();
 		foreach ($raw_result as $item) {
 			$date = new DateTime($item['Join_Date']);
 			$doj = $date->format('m/d/Y');
 			$data[] = array(
-				"id"    =>  sprintf('%04d', $item['Employee_Number']),
-				"text"  =>  sprintf('%04d', $item['Employee_Number']) . ' - ' . $item['full_name'],
-				"fullname"  =>  $item['Name'],
-				"designation"  =>  $item['Designation'],
-				"doj"  => $doj,
+				"id"          => sprintf('%04d', $item['emp_id']),
+				"text"        => sprintf('%04d', $item['emp_id']) . ' - ' . $item['full_name'],
+				"fullname"    => $item['full_name'],
+				"designation" => $item['Designation'],
+				"doj"         => $doj,
 			);
 		}
-
-		// $data = var_dump($raw_result);
 		return $data;
 	}
 
