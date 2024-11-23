@@ -13,7 +13,7 @@ class C_index extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
+		$this->load->library('email');
 		$this->load->model('m_index');
 		$this->load->model('M_authentication');
 	}
@@ -39,7 +39,7 @@ class C_index extends CI_Controller {
 		$this->load->view('v_index', $data);
 	}
 
-	public function doAction($id = null, $role = null, $type = null, $id_erc = null)
+	public function doAction($id = null, $role = null, $type = null)
 	{
 		if ($id == null && $role == null && $type == null) {
 			$id = $this->input->post('id');
@@ -63,8 +63,7 @@ class C_index extends CI_Controller {
 			case 'hrd':
 					if ($type == 'acc') {
 						$data = array(
-							'hrd_img' => 'acc',
-							'ceo_img' => 'acc'
+							'hrd_img' => 'acc'
 						);
 							
 					}elseif ($type == 'reject') {
@@ -141,26 +140,25 @@ class C_index extends CI_Controller {
 
 		// SELECT ACCOUNT BY ROLE
 		// $dataAccount = $this->m_index->getDataByField('account','role', $tempRole);
-		
 
 		switch ($tempRole) {
 			case 'manager':
-					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					// die(var_dump($dataErc[0]['manager_empid']));
 					$empid = $dataErc[0]['manager_empid'];
 				break;
 			
 			case 'ceo':
-					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					$empid = $dataErc[0]['ceo_empid'];
 				break;
 
 			case 'hrd':
-					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					$empid = $dataErc[0]['hrd_empid'];
 				break;
 			case 'complete':
-					$dataErc = $this->m_index->getDataByField('input','id_erc', $id_erc);
+					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					$empid = $dataErc[0]['hrd_empid'];
 				break;
 			default:
@@ -172,42 +170,38 @@ class C_index extends CI_Controller {
 		// die(var_dump('Employee id Destination: '.$empid));
 		$dataAccount = $this->m_index->getDataByField('account','emp_id', $empid);
 		// die(var_dump($this->db->last_query()));
-		// die(var_dump($dataAccount));
 
 		foreach ($dataAccount as $dAcc) {
-			$acclink = base_url().'approval/'.$id.'/'.$tempRole.'/acc/'.$id_erc;
-			$rejectlink = base_url().'approval/'.$id.'/'.$tempRole.'/reject/'.$id_erc;
+			$acclink = base_url().'approval/'.$id.'/'.$tempRole.'/acc/';
+			$rejectlink = base_url().'approval/'.$id.'/'.$tempRole.'/reject/';
 			$fullname = $dAcc["full_name"];
-
-			$textContent = <<<HEREDOC
-			Dear $fullname $division , Penerima berikut adalah link untuk menyetujui Employee change record karyawan. untuk menyetujui klik link pada di bawah ini.
-
+		
+			// Use double quotes for string interpolation
+			$textContent = "
+			Dear $fullname, 
+		
+			Penerima berikut adalah link untuk menyetujui Employee change record karyawan. Untuk menyetujui, klik link di bawah ini.
+		
 			Link for Accept  : $acclink
-
+		
 			Link for Reject : $rejectlink
-
+		
 			Best Regards, 
 			CLADTEK.
-
-			HEREDOC;
+			";
+		
 			$data = array(
-				'title' => 'Employee change Record approval',
+				'title' => 'Employee Change Record Approval',
 				'content' => $textContent,
 				'email' => $dAcc['email'],
-				'nama' => $dAcc['full_name'], 
 			);
-
-			// if ($this->sendEmail($data)) {
-		echo "<script>alert('Data saved successfully!')</script>";
-		redirect(base_url('c_index'),'refresh');
-				// redirect('login'); aaaa
-			// }else {
-			// 	die('Failed To send email');
-			// }
+		
+			if ($data) {
+				$this->send_email_notification($data);
+			}
+			echo "<script>alert('Data saved successfully!')</script>";
+			redirect(base_url('c_index'), 'refresh');
 		}
-
-		
-		
 	}
 
 	public function Approve()
@@ -473,39 +467,15 @@ class C_index extends CI_Controller {
 
 		// Upload Gambar 
 
-		// die('lol');
-		$upload = $this->uploadImage('imgApprove1');
-		// die(var_dump([$upload]));
-		if ($_FILES['imgApprove1']['size'] == 0) {
-			// if nothing upload file
-
-			if ($this->m_index->simpan($data)) {
-				$id_erc = $this->db->insert_id();
-				// die(var_dump('Inserted id : '.$id_erc));
-				$this->doAction($emp_id, 'user', 'acc', $id_erc);
-			}		
+		if ($this->m_index->simpan($data)) {
+			$id_erc = $this->db->insert_id();
+			// die(var_dump('Inserted id : '.$id_erc));
+			$this->doAction($emp_id, 'user', 'acc', $id_erc);
+		}		
 
 
-			echo "<script>alert('Data saved successfully!')</script>";
-			redirect(base_url('c_index'),'refresh');
-			// redirect(base_url('logout'),'refresh');
-		} else {
-			if($upload['result'] == "success"){ // Jika proses upload sukses
-
-				$data['request_img'] = $upload['file']['file_name'];
-
-				$this->m_index->simpan($data);
-				echo "<script>alert('Data saved successfully!')</script>";
-				redirect(base_url('c_index'),'refresh');
-				// redirect(base_url('logout'),'refresh');
-
-			}else{ // Jika proses upload gagal
-
-				die(var_dump($upload));
-				echo "<script>alert('Failed to Upload Approval Picture! ') </script>";
-				redirect(base_url('c_index'),'refresh');
-			}
-		} 
+		echo "<script>alert('Data saved successfully!')</script>";
+		redirect(base_url('c_index'),'refresh');
 		
 	}
 
@@ -566,68 +536,44 @@ class C_index extends CI_Controller {
         echo json_encode($data);
     }	
 
-	public function sendEmail($data)
-	{
-
-		/* 
-			1. Judul
-			2. Nama Penerima
-			3. Content
-			4. Link
-		*/
-		//Create an instance; passing `true` enables exceptions
-		$mail = new PHPMailer(true);
-
-		$judul = $data['title'];
-		$content = $data['content'];
-		$email = $data['email'];
-		$penerima = $data['nama'];
-
-		// $no_invoice = $_POST['no_invoice'];
-		// $nama = $_POST['nama_pengirim'];
-		// $email = $_POST['email'];
-
+	public function send_email_notification($data = null) {
+		// Email configuration
+		$config = array(
+			'protocol'  => 'smtp',
+			'smtp_host' => 'ssl://smtp.gmail.com',
+			'smtp_port' => 465, // or 465 for SSL
+			'smtp_user' => 'suryaa25lana@gmail.com',
+			'smtp_pass' => 'ggsw vkfs mvit nwge',
+			'mailtype'  => 'html', // or 'text'
+			'charset'   => 'utf-8',
+			'newline'   => "\r\n",
+		);
+	
+		// Initialize the email library with the config
+		$this->email->initialize($config);
 		
-		// $no_invoice = '111';
-		// $nama_tujuan= 'LIPP';
-		// $email = 'alipsayyidah102@gmail.com';
-	
-	
-		//Server settings
-		// $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-		$mail->isSMTP();                                            //Send using SMTP
-		$mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
-		$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-		$mail->Username   = 'alipsayyidah102@gmail.com';                     //SMTP username
-		$mail->Password   = 'Sriyani25';                               //SMTP password
-		//$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-		$mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-	
-		//Recipients
-		$mail->setFrom('alipsayyidah102@gmail.com', 'surya');
-		$mail->addAddress($email);     //Add a recipient
-																 //Name is optional
-		// $mail->addReplyTo('fernando.siboro@cladtek.com', 'surya');
-		// $mail->addReplyTo('alipsayyidah102@gmail.com', 'surya');
-		// $mail->addCC('cc@example.com');
-		// $mail->addBCC('bcc@example.com');
-	
-		//Attachments
-		// $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-		// $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-	
-		//Content
-		$mail->isHTML(true);                                  //Set email format to HTML
-		$mail->Subject = $judul;
-		$mail->Body    = $content;
-		
-		if($mail->send())
-		{
-			return TRUE;
+		// Set email parameters
+		$this->email->from('suryaa25lana@gmail.com', 'Surya Lana');
+		if ($data == null) {
+			$this->email->to('beemons123@gmail.com');
+			$this->email->subject('Email Notification');
+			$this->email->message('This is a test email notification.');
+		}else{
+			$this->email->to($data['email']);
+			$this->email->subject($data['title']);
+			$this->email->message($data['content']);
 		}
-		else{
-			return FALSE;
+	
+		// Send the email
+		if ($this->email->send()) {
+			echo 'Email sent successfully.';
+		} else {
+			show_error($this->email->print_debugger());
 		}
+	}
+
+	function sendEmail(){
+		$this->send_email_notification();
 	}
 
 	function exportPDF(){
