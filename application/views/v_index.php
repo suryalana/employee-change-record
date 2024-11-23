@@ -31,7 +31,11 @@
 			<h4 class="name" style=" float: right; margin-top: -120px;"><?= $_SESSION['full_name']; ?> </h4>
 			<h4 class="name" style=" float: right; margin-top: -95px;"><?= ucfirst($_SESSION['role']); ?></h4>
 			<a href="<?= base_url('logout'); ?>" class="btn btn-danger" style="float: right; margin-top: -65px;">Logout</a>
-			<a href="<?= base_url('hrd'); ?>" class="btn btn-info" style=" float: right; margin-top: -20px;">Data</a>
+			<?php if (@$_SESSION['role'] != 'user' ) { ?> 
+				<a href="<?= base_url('hrd'); ?>" class="btn btn-info" style=" float: right; margin-top: -20px;">Data</a>
+
+			<?php } ?>
+			
 			<a href="<?= base_url('c_authentication/change'); ?>" class="btn btn-danger" style=" float: right; margin-top: -20px; margin-right:20px">change</a>
 			<select class="form-select" name="ops_employee">
 				<option value="NULL">Choice..</option>
