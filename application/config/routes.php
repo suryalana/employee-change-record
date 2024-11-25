@@ -11,6 +11,7 @@ $route['logout'] = 'c_authentication/logout';
 $route['approve'] = 'c_index/Approve';
 
 $route['hrd'] = 'c_index/Hrd';
+$route['hrd2'] = 'c_index/Hrd2';
 $route['ubah/(:any)'] = 'c_index/ubah/$1';
 
 $route['doaction'] = 'c_index/doAction';

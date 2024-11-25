@@ -38,6 +38,11 @@ class M_index extends CI_Model
 		//return $this->db->get_where($table, $data);
 	}
 
+	public function getInputData() {
+        $query = $this->db->get('input');
+        return $query->result();
+    }
+
 	public function tampil2($table, $data)
 	{
 		//return $this->db->get('input')->result();

@@ -146,30 +146,33 @@ class C_index extends CI_Controller {
 					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					// die(var_dump($dataErc[0]['manager_empid']));
 					$empid = $dataErc[0]['manager_empid'];
+					$ERCData = $dataErc[0];
 				break;
 			
 			case 'ceo':
 					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					$empid = $dataErc[0]['ceo_empid'];
+					$ERCData = $dataErc[0];
 				break;
 
 			case 'hrd':
 					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					$empid = $dataErc[0]['hrd_empid'];
+					$ERCData = $dataErc[0];
 				break;
 			case 'complete':
 					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
 					$empid = $dataErc[0]['hrd_empid'];
+					$ERCData = $dataErc[0];
 				break;
 			default:
 				# code...
 				break;
 		}
 
-
-		// die(var_dump('Employee id Destination: '.$empid));
 		$dataAccount = $this->m_index->getDataByField('account','emp_id', $empid);
-		// die(var_dump($this->db->last_query()));
+		$nameRequest = $ERCData['Name'];
+		$reasonRequest = $ERCData['Reason_for_Change'];
 
 		foreach ($dataAccount as $dAcc) {
 			$acclink = base_url().'approval/'.$id.'/'.$tempRole.'/acc/';
@@ -178,16 +181,20 @@ class C_index extends CI_Controller {
 		
 			// Use double quotes for string interpolation
 			$textContent = "
-			Dear $fullname, 
-		
-			Penerima berikut adalah link untuk menyetujui Employee change record karyawan. Untuk menyetujui, klik link di bawah ini.
-		
-			Link for Accept  : $acclink
-		
-			Link for Reject : $rejectlink
-		
-			Best Regards, 
-			CLADTEK.
+			<html>
+			<head>
+				<title>Employee Change Record Approval</title>
+			</head>
+			<body>
+				<p>Dear $fullname,</p>
+				<p>You get new Request ECR from $nameRequest with reason : $reasonRequest.</p>
+				<p>You can choose <b>Accept</b> or <b>Reject</b> the ECR Request by pressing one of the links below</p>
+				<p>Link for Accept  : <a href='$acclink'>$acclink</a></p>
+				<p>Link for Reject : <a href='$rejectlink'>$rejectlink</a></p>
+				<p>Best Regards,</p>
+				<p>CLADTEK.</p>
+			</body>
+			</html>
 			";
 		
 			$data = array(
@@ -199,8 +206,10 @@ class C_index extends CI_Controller {
 			if ($data) {
 				$this->send_email_notification($data);
 			}
-			echo "<script>alert('Data saved successfully!')</script>";
-			redirect(base_url('c_index'), 'refresh');
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(200)
+				->set_output(json_encode(array('status' => 'success', 'message' => 'Data saved successfully!')));
 		}
 	}
 
@@ -226,7 +235,26 @@ class C_index extends CI_Controller {
             redirect('login');    
         }
 		$data['input'] = $this->m_index->tampil();
+		// die(var_dump($data['input']));
+		// $this->load->view('v_hrd', $data);
+		$this->load->view('v_hrd_dt', $data);
+	}
+
+	public function Hrd2(){
+		if(!$this->M_authentication->is_LoggedIn()){
+            redirect('login');    
+        }
+		$data['input'] = $this->m_index->tampil();
+		// die(var_dump($data['input']));
 		$this->load->view('v_hrd', $data);
+	}
+
+	public function getHRDData(){
+		if(!$this->M_authentication->is_LoggedIn()){
+            redirect('login');    
+        }
+		$data = $this->m_index->getInputData();
+		echo json_encode($data);
 	}
 
 	public function ubah($id_erc)
@@ -566,7 +594,7 @@ class C_index extends CI_Controller {
 	
 		// Send the email
 		if ($this->email->send()) {
-			echo 'Email sent successfully.';
+			return true;
 		} else {
 			show_error($this->email->print_debugger());
 		}

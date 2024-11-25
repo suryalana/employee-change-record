@@ -87,7 +87,7 @@
 							if ($_SESSION['role'] != 'manager') {
 								$tmp = "disabled = 'true'";
 							}
-							if ($d != 'acc') {
+							if ($d != 'acc' && $_SESSION['role'] == 'manager') {
 								if ($d == 'reject') {
 									return  $d;
 								}
@@ -102,6 +102,9 @@
 								</div>
 								';
 							} else {
+								if ($_SESSION['role'] != 'manager') {
+									return "-";									
+								}
 								return  '
 								<div id="btnActionMng' . $id . '">
 									' . $d . '
@@ -113,9 +116,10 @@
 						{
 							$tmp = '';
 							if ($_SESSION['role'] != 'hrd') {
-								$tmp = "disabled = 'true'";
+								// $tmp = "disabled = 'true'";
+								return "-";
 							}
-							if ($d != 'acc') {
+							if ($d != 'acc' && $_SESSION['role'] == 'hrd') {
 								if ($d == 'reject') {
 									return  $d;
 								}
@@ -124,6 +128,9 @@
 						</button> <button type="button" id="' . $id  . '" class="btn btn-danger btnrh" ' . $tmp . '>
 						<img src="https://img.icons8.com/ios-filled/30/000000/x.png"/></button>';
 							} else {
+								if ($_SESSION['role'] != 'hrd') {
+									return "-";									
+								}
 								return  $d;
 							}
 						}
@@ -132,8 +139,9 @@
 							$tmp = '';
 							if ($_SESSION['role'] != 'ceo') {
 								$tmp = "disabled = 'true'";
+								
 							}
-							if ($d != 'acc') {
+							if ($d != 'acc' && $_SESSION['role'] == 'ceo') {
 								if ($d == 'reject') {
 									return  $d;
 								}
@@ -143,7 +151,26 @@
 						</button> <button type="button" id="' . $id  . '" class="btn btn-danger btnrc" ' . $tmp . '>
 						<img src="https://img.icons8.com/ios-filled/30/000000/x.png"/></button>';
 							} else {
+								if ($_SESSION['role'] != 'ceo') {
+									return "-";									
+								}
 								return  $d;
+							}
+						}
+
+						function checkApproveIsDone($i){
+							if ($i->manager_img != null && $i->hrd_img != null && $i->ceo_img != null) {
+								return "-";
+							} else {
+								return  "<a href='" . base_url("ubah/" . $i->id_erc) . "'>
+								<button type='button' class='label label-info'>EDIT</button>
+							  </a>
+							  <a href='" . base_url("c_index/hapus/" . $i->Employee_ID) . "'>
+								<button type='button' class='label label-danger'>DELETE</button>
+							  </a>
+							  <a href='" . base_url("GeneratePdfController/index/" . $i->Employee_ID) . "'>
+								<button type='button' class='label label-dark'>PRINT</button>
+							  </a>";
 							}
 						}
 						if (! empty($input)) {
@@ -176,9 +203,7 @@
 						<td nowrap align=center>" . checkstatushrd($i->hrd_img, $i->id_erc) . "</td>
 						<td nowrap align=center>" . checkstatusceo($i->ceo_img, $i->id_erc) . "</td>
 						<td nowrap>
-							<a href='" . base_url("ubah/" . $i->id_erc) . "'<button type='button' class='label label-info'>EDIT</button></a>
-							<a href='" . base_url("c_index/hapus/" . $i->Employee_ID) . "'<button type='button' class='label label-danger'>DELETE</button></a>
-							<a href='" . base_url("GeneratePdfController/index/" . $i->Employee_ID) . "'<button type='button' class='label label-dark'>PRINT</button></a>
+							". checkApproveIsDone($i) ."
 						</td>
 					</tr> ";
 							}
