@@ -41,13 +41,6 @@
 			<table id="inputsTable" class="display">
 				<thead>
 					<tr>
-						<th colspan="16">
-							<div class="position-absolute top-20 end-4"></div>
-							<h3 class="text-center font-weight-bold" style="white-space:nowrap;">Data ECR (Employee
-								Change Record)</h3>
-						</th>
-					</tr>
-					<tr>
 						<th>Options</th>
 						<th>Name</th>
 						<th>Employment ID</th>
@@ -197,14 +190,18 @@
 					{
 						"data": null,
 						"render": function (data, type, row) {
-							if (row.manager_img != null && row.hrd_img != null && row.ceo_img != null) {
-								return "-";
+							let btn = '';
+							if (row.manager_img != null || row.hrd_img != null || row.ceo_img != null) {
+								btn += "-<br/>";
 							} else {
-								return `<button onclick="window.location.href='${"<?php echo base_url('ubah/'); ?>" + row.id_erc}'" type='button' class='label label-info'>EDIT</button>
-								<button onclick="window.location.href='${"<?php echo base_url('c_index/hapus/'); ?>" + row.Employee_ID}'" type='button' class='label label-danger'>DELETE</button>
-								<button onclick="window.location.href='${"<?php echo base_url('GeneratePdfController/index/'); ?>" + row.Employee_ID}'" type='button' class='label label-dark'>PRINT</button>`;
+								btn += `<button onclick="window.location.href='${"<?php echo base_url('ubah/'); ?>" + row.id_erc}'" type='button' class='label label-info'>EDIT</button>
+								`;
 							}
-						}
+
+							btn += `<button onclick="window.location.href='${"<?php echo base_url('c_index/hapus/'); ?>" + row.Employee_ID}'" type='button' class='label label-danger'>DELETE</button>
+								<button onclick="window.location.href='${"<?php echo base_url('GeneratePdfController/index/'); ?>" + row.Employee_ID}'" type='button' class='label label-dark'>PRINT</button>`;
+							return btn;
+							}
 					},
 				]
 			});
@@ -234,7 +231,7 @@
 				success: function (response) {
 					console.log(response);
 					if (response.status == 'success') {
-						location.reload();
+						window.location.reload();
 					} else {
 						alert(response.message);
 					}
@@ -247,7 +244,7 @@
 
 		} catch (error) {
 			console.error("AJAX Error: ", error); // Log any AJAX errors
-			location.reload();
+			alert("Error: " + error);
 		}
 	}
 </script>

@@ -121,7 +121,7 @@ class C_index extends CI_Controller {
 				break;
 
 			case 'ceo':
-					redirect('login');
+					$tempRole = 'complete';
 				break;
 			
 			default:
@@ -162,7 +162,7 @@ class C_index extends CI_Controller {
 				break;
 			case 'complete':
 					$dataErc = $this->m_index->getDataByField('input','id_erc', $id);
-					$empid = $dataErc[0]['hrd_empid'];
+					$empid = $dataErc[0]['Employee_ID'];
 					$ERCData = $dataErc[0];
 				break;
 			default:
@@ -180,7 +180,22 @@ class C_index extends CI_Controller {
 			$fullname = $dAcc["full_name"];
 		
 			// Use double quotes for string interpolation
-			$textContent = "
+			if($tempRole == 'complete') {
+				$textContent = "
+				<html>
+			<head>
+				<title>Employee Change Record Approval</title>
+			</head>
+			<body>
+				<p>Dear $fullname,</p>
+				<br><br> Please be informed that the request for $nameRequest has been completed. <br><br> Thank you for your cooperation.
+				<p>Best Regards,</p>
+				<p>CLADTEK.</p>
+			</body>
+			</html>
+			";
+			} else {
+				$textContent = "
 			<html>
 			<head>
 				<title>Employee Change Record Approval</title>
@@ -196,6 +211,7 @@ class C_index extends CI_Controller {
 			</body>
 			</html>
 			";
+			}
 		
 			$data = array(
 				'title' => 'Employee Change Record Approval',
