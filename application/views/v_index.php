@@ -357,8 +357,6 @@
 							onclick="myFunction4()">
 						<p id="text4" style="display:none">APPROVE!</p>
 					</td>
-
-
 					<?php } ?>
 				</tr>
 			</table>

@@ -170,14 +170,14 @@ class C_index extends CI_Controller {
 				break;
 		}
 
-		$dataAccount = $this->m_index->getDataByField('account','emp_id', $empid);
+		$dataEmployee = $this->m_index->getDataByField('employee','Employee_Number', $empid);
 		$nameRequest = $ERCData['Name'];
 		$reasonRequest = $ERCData['Reason_for_Change'];
 
-		foreach ($dataAccount as $dAcc) {
+		foreach ($dataEmployee as $dEmp) {
 			$acclink = base_url().'approval/'.$id.'/'.$tempRole.'/acc/';
 			$rejectlink = base_url().'approval/'.$id.'/'.$tempRole.'/reject/';
-			$fullname = $dAcc["full_name"];
+			$fullname = $dEmp["Name"];
 		
 			// Use double quotes for string interpolation
 			if($tempRole == 'complete') {
@@ -216,7 +216,7 @@ class C_index extends CI_Controller {
 			$data = array(
 				'title' => 'Employee Change Record Approval',
 				'content' => $textContent,
-				'email' => $dAcc['email'],
+				'email' => $dEmp['Email'],
 			);
 		
 			if ($data) {
